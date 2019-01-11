@@ -20,7 +20,6 @@ class CqJupyter {
     };
 
     changeviewpoint(id, dir) {
-        console.log(id +"_" + dir +"_view")
         document.getElementById(id +"_" + dir +"_view").setAttribute('set_bind','true')
     }
 
