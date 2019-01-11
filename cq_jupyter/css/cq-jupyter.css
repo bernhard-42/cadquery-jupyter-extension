@@ -1,3 +1,7 @@
+.container { 
+    width:95% !important; 
+}
+
 .Row {
     display: table;
     width: 100%;
