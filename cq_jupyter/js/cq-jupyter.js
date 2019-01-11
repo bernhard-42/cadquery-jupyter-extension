@@ -52,23 +52,12 @@ class CqJupyter {
         this.changeviewpoint(id, "top");
     }
 
-    // show(id, dir) {
-    //     var e = document.getElementById(id);
-    //     e.runtime.showAll(dir);
-    // };
-
     refit(id) {
         var e = document.getElementById(id);
         e.runtime.fitAll(false);
     };
 
-    // reset(id) {
-    //     var e = document.getElementById(id);
-    //     e.runtime.resetView(); 
-    // };
-
     toggle(id, name) {
-        console.log("toggle " + name)
         var shape = this.findShape(id, name);
         if (shape[0].getAttribute("render") == "true") {
             shape[0].setAttribute("render", false);
