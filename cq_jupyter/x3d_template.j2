@@ -1,0 +1,116 @@
+<script>
+    // initialize once
+    if(typeof window.cqJupyter === "undefined") {
+        console.log("Initializing CqJupyter")
+        window.cqJupyter = new CqJupyter()
+    }
+    $("#x3domAxisSceneView").viewConnector({connected: "{{id}}", connectPosition: false});
+</script>
+
+<div style='height: {{divheight}}px; width: 100%;' width='100%' height='{{divheight}}px' id='cq_viewer_{{id}}'>
+    <div class="Row">
+        <span onclick="cqJupyter.refit('{{id}}')">  [fit]</span>
+        <span onclick="cqJupyter.reset('{{id}}')">  [reset]</span>
+        <span onclick="cqJupyter.front('{{id}}')">  [front]</span>
+        <span onclick="cqJupyter.right('{{id}}')">  [right]</span>
+        <span onclick="cqJupyter.rear('{{id}}')">   [rear]</span>
+        <span onclick="cqJupyter.left('{{id}}')">   [left]</span>
+        <span onclick="cqJupyter.bottom('{{id}}')"> [bottom]</span>
+        <span onclick="cqJupyter.top('{{id}}')">    [top]</span>
+    <div>
+    <div class="Row" id='cq_viewer_row_{{id}}'>
+        <div class="NavColumn" id='cq_nav_column_{{id}}'>
+            {% for part, name in parts.items() %}
+            <span id='toggle_{{part}}_{{id}}' onclick="cqJupyter.toggle('{{id}}', '{{name}}')">[toggle]</span>
+            <span id='wire_{{part}}_{{id}}' onclick="cqJupyter.wire('{{id}}', '{{name}}')"> [wire] </span>
+            <span> {{part}}</span>
+            {% endfor %}
+        </div>
+        <div class="ViewerColumn" id='cq_x3d_column_{{id}}'>
+            <x3d class="cqviewer" style='height: {{height}}px; width: 100%;' id='{{id}}' width='100%'>
+                <scene>
+                    {% for view, vp in viewpoints.items() %}
+                    <Viewpoint id='{{id}}_{{view}}_view' 
+                               centerOfRotation='{{x0}} {{y0}} {{z0}}' 
+                               position='{{vp["viewpoint"][0]}} {{vp["viewpoint"][1]}} {{vp["viewpoint"][2]}}' 
+                               orientation='{{vp["axis"][0]}} {{vp["axis"][1]}} {{vp["axis"][2]}} {{vp["angle"]}}' 
+                               fieldOfView='{{fov}}'>
+                    </Viewpoint>
+                    {% endfor %}
+
+                    {{src}}
+                </scene>
+            </x3d>        
+        </div>
+
+        <div>
+            <x3d id="x3domAxisSceneView">
+                <scene>
+                    <navigationInfo type='"NONE" "ANY"'></navigationInfo>
+                    <viewpoint position="0 0 5.0"  orientation="0 0 0 1"></viewpoint>
+                    <Transform id="axes">        
+                        <!-- X arrow and label -->
+                        <Shape isPickable="false" DEF="AXIS_LINE_X">
+                            <IndexedLineSet index="0 1 -1">
+                                <Coordinate point="0 0 0, 1 0 0" color="1 0 0, 1 0 0"></Coordinate>
+                            </IndexedLineSet>
+                            <Appearance DEF='Red'><Material diffuseColor="0 0 0" emissiveColor='1 0 0'></Material></Appearance>
+                        </Shape>
+                        <Transform translation='1 0 0'>
+                            <Transform rotation='1 0 0 1.57079632679'>
+                                <Billboard>
+                                    <Shape isPickable="false" DEF="AXIS_LABEL_X">
+                                        <Text string="X" solid="false">
+                                            <FontStyle size="0.6"></FontStyle>
+                                        </Text>
+                                        <Appearance USE='Red'></Appearance>
+                                    </Shape>
+                                </Billboard>
+                            </Transform>
+                        </Transform>
+
+                        <!-- Y arrow and label -->                            
+                        <Shape isPickable="false" DEF="AXIS_LINE_Y">
+                            <IndexedLineSet index="0 1 -1">
+                                <Coordinate point="0 0 0., 0 1 0" color="0 1 0, 0 1 0"></Coordinate>
+                            </IndexedLineSet>
+                            <Appearance DEF='Green'><Material diffuseColor="0 0 0" emissiveColor='0 1 0'></Material></Appearance>
+                        </Shape>
+                        <Transform translation='0 1 0'>
+                            <Transform rotation='1 0 0 1.57079632679'>
+                                <Billboard>
+                                    <Shape isPickable="false" DEF="AXIS_LABEL_Y">
+                                        <Text string="Y" solid="false">
+                                            <FontStyle size="0.6"></FontStyle>
+                                        </Text>
+                                        <Appearance USE='Green'></Appearance>
+                                    </Shape>
+                                </Billboard>
+                            </Transform>
+                        </Transform>
+
+                        <!-- Z arrow and label -->
+                        <Shape isPickable="true" DEF="AXIS_LINE_Z">
+                            <IndexedLineSet index="0 1 -1">
+                                <Coordinate point="0 0 0, 0 0 1" color="0 0 1, 0 0 1"></Coordinate>
+                            </IndexedLineSet>
+                            <Appearance DEF='Blue'><Material diffuseColor="0 0 0" emissiveColor='0 0 1'></Material></Appearance>
+                        </Shape>
+                        <Transform translation='0 0 1'>
+                            <Transform rotation='1 0 0 1.57079632679'>
+                                <Billboard>
+                                    <Shape isPickable="false" DEF="AXIS_LABEL_Z">
+                                        <Text string="Z" solid="false">
+                                            <FontStyle size="0.6"></FontStyle>
+                                        </Text>
+                                        <Appearance USE='Blue'></Appearance>
+                                    </Shape>
+                                </Billboard>
+                            </Transform>
+                        </Transform>
+                    </Transform>
+                </scene>
+            </x3d> 
+        <div>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+.Row {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    border-spacing: 10px;
+}
+.ViewerColumn {
+    display: table-cell;
+    width: 80%;
+    vertical-align: top;
+}
+.NavColumn {
+    display: table-cell;
+    width: 20%;
+    vertical-align: top;
+    overflow: scroll;
+}
+
+#x3domAxisSceneView {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    left: 320px;
+    bottom: 60px;
+    border: 1px;
+    z-index: 1000;
+}
