@@ -30,7 +30,6 @@
                 this._scene = scene;
 
                 //Set connected scene
-                console.log(this._options.connected)
                 this._connectedScene = document.getElementById(this._options.connected);
 
                 //Set viewpoint
