@@ -4,7 +4,7 @@
         console.log("Initializing CqJupyter")
         window.cqJupyter = new CqJupyter()
     }
-    $("#x3domAxisSceneView").viewConnector({connected: "{{id}}", connectPosition: false});
+    $("#x3domAxisSceneView_{{id}}").viewConnector({connected: "{{id}}", connectPosition: false});
 </script>
 
 <div style='height: {{divheight}}px; width: 100%;' width='100%' height='{{divheight}}px' id='cq_viewer_{{id}}'>
@@ -44,7 +44,7 @@
         </div>
 
         <div>
-            <x3d id="x3domAxisSceneView">
+            <x3d class="x3domAxisSceneView" id="x3domAxisSceneView_{{id}}">
                 <scene>
                     <navigationInfo type='"NONE" "ANY"'></navigationInfo>
                     <viewpoint position="0 0 5.0"  orientation="0 0 0 1"></viewpoint>

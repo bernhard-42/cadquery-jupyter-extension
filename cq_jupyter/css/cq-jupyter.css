@@ -16,7 +16,7 @@
     overflow: scroll;
 }
 
-#x3domAxisSceneView {
+.x3domAxisSceneView {
     position: absolute;
     width: 80px;
     height: 80px;
