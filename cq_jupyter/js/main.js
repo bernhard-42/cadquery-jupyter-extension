@@ -2,7 +2,7 @@ define([
     'require', 
     'jquery', 
     './x3dom',
-    './view-connector',
+    './jquery.viewConnector',
     './cq-jupyter',
     'base/js/namespace'
 ], function (
