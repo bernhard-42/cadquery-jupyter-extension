@@ -16,18 +16,14 @@ define([
     "use strict";
 
     var initialize = function () {
-        // update params with any specified in the server's config file.
-        // the "thisextension" value of the Jupyter notebook config's
-        // data may be undefined, but that's ok when using JQuery's extend
-        // $.extend(true, params, Jupyter.notebook.config.thisextension);
-
-        // add our extension's css to the page
+        // load x3dom css
         $('<link/>').attr({
             rel: 'stylesheet',
             type: 'text/css',
             href: requirejs.toUrl('../css/x3dom.css')
         }).appendTo('head');
             
+        // load cq-jupyter css
         $('<link/>').attr({
             rel: 'stylesheet',
             type: 'text/css',
