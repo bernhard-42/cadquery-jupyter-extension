@@ -4,7 +4,6 @@
         console.log("Initializing CqJupyter")
         window.cqJupyter = new CqJupyter()
     }
-    $("#x3domAxisSceneView_{{id}}").viewConnector({connected: "{{id}}", connectPosition: false});
 </script>
 
 <div style='height: {{divheight}}px; width: 100%;' width='100%' height='{{divheight}}px' id='cq_viewer_{{id}}'>
@@ -15,8 +14,8 @@
         <span onclick="cqJupyter.right('{{id}}')">  [right]</span>
         <span onclick="cqJupyter.rear('{{id}}')">   [rear]</span>
         <span onclick="cqJupyter.left('{{id}}')">   [left]</span>
-        <span onclick="cqJupyter.bottom('{{id}}')"> [bottom]</span>
         <span onclick="cqJupyter.top('{{id}}')">    [top]</span>
+        <span onclick="cqJupyter.bottom('{{id}}')"> [bottom]</span>
     <div>
     <div class="Row" id='cq_viewer_row_{{id}}'>
         <div class="NavColumn" id='cq_nav_column_{{id}}'>
@@ -114,3 +113,9 @@
         <div>
     </div>
 </div>
+
+<script>
+    console.log($("Initializing x3dom for view {{id}}"))
+    x3dom.reload();
+    $("#x3domAxisSceneView_{{id}}").viewConnector({connected: "{{id}}", connectPosition: false});
+</script>
