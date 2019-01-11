@@ -10,8 +10,6 @@ import jinja2
 from cadquery.occ_impl.geom import BoundBox
 from cadquery import Shape, Compound
 
-# from .x3d_template import html_x3d
-
 DEBUG = False
 N_HEADER_LINES = 11
 FOV = 0.1
