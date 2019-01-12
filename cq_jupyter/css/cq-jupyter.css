@@ -1,31 +1,104 @@
 .container { 
     width:95% !important; 
 }
+.NavEntries {
+    white-space: nowrap;
+}
+
+.NavWrapper {
+    white-space: nowrap;
+    padding: 2px 0 2px 0;
+}
+
+.bordered {
+    padding: 5px;
+    border-width: 1px;
+    border-color: #ccc;
+    border-style: dotted;
+}
+
+.borderedDark {
+    padding: 2px;
+    border-width: 1px;
+    border-color: #aaa;
+    border-style: solid;
+}
+
+.shaded {
+    background-color: #eee;
+}
 
 .Row {
     display: table;
     width: 100%;
     table-layout: fixed;
-    border-spacing: 10px;
+    border-spacing: 0px;
+    border-width: 1px;
+    border-color: #ccc;
+    
 }
+
 .ViewerColumn {
     display: table-cell;
-    width: 80%;
+    width: 100%;
     vertical-align: top;
 }
+
 .NavColumn {
     display: table-cell;
-    width: 20%;
+    width: 200px;
     vertical-align: top;
     overflow: scroll;
+}
+
+.NavEntry {
+    vertical-align: middle;
+}
+
+.NavTitle {
+    font-weight: bold;
+    padding: 6px 6px 6px 0px;
+}
+
+X3D, x3d {
+    border: 0px
 }
 
 .x3domAxisSceneView {
     position: absolute;
     width: 80px;
     height: 80px;
-    left: 320px;
-    bottom: 60px;
-    border: 1px;
+    left: 300px;
+    bottom: 70px;
     z-index: 1000;
+}
+
+.Icon {
+    display: inline-block
+}
+
+.IconWrapper {
+    display: inline-block;
+    width: 40px
+}
+
+.IconWrapperSmall {
+    display: inline-block;
+    width: 32px;
+    vertical-align: middle;
+}
+
+.IconWrapper:hover, .IconWrapperSmall:hover {
+    background: #ccc;
+    cursor: pointer;
+}
+
+.PartColor {
+    width: 15px;
+    height: 15px;
+    vertical-align: middle;
+    background: #fff;
+    border: #aaa;
+    border-style: solid;
+    border-width: 1px;
 }

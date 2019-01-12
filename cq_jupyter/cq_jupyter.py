@@ -136,7 +136,12 @@ def x3d_display(*parts,
         viewpoints["right"] = viewpoint(*right(), c, dist)
 
         return add_x3d_boilerplate(x3d_str,
-                                   {part.name:"shape%d"%i for i, part in enumerate(parts)},
+                                   {part.name:{
+                                        "name": "shape%d"%i, 
+                                        "color": part.web_color(),
+                                        "visible": part.visible
+                                        } 
+                                        for i, part in enumerate(parts)},
                                    viewpoints,
                                    center=(c.x,c.y,c.z),
                                    height=height)
@@ -146,10 +151,16 @@ def x3d_display(*parts,
 #
 
 class Part(object):
-    def __init__(self, shape, name, color=(1,1,0)):
+    def __init__(self, shape, name, color=None, visible=True):
+        if color is None:
+            color = (1,1,0)
         self.shape = shape
         self.name = name
         self.color = color
+        self.visible = visible
+    
+    def web_color(self):
+        return "rgba(%d, %d, %d, 0.6)" % tuple([c*255 for c in self.color])
         
 class Assembly(object):
     def __init__(self, *parts, height=400):
@@ -160,7 +171,7 @@ class Assembly(object):
         assembly = []
         for part in self.parts:
             # Replace original shape with compound
-            assembly.append(Part(Compound.makeCompound(part.shape.objects), part.name, part.color))
+            assembly.append(Part(Compound.makeCompound(part.shape.objects), part.name, part.color, part.visible))
 
         return x3d_display(*assembly, export_edges=True, height=self.height)
 

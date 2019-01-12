@@ -1,6 +1,6 @@
 class CqJupyter {
 
-    constructor(id, parts) {
+    constructor() {
         x3dom.reload();
     }
 
@@ -20,10 +20,12 @@ class CqJupyter {
     };
 
     changeviewpoint(id, dir) {
-        document.getElementById(id +"_" + dir +"_view").setAttribute('set_bind','true')
+        document.getElementById(id +"_" + dir +"_view").setAttribute('set_bind','true');
+        var e = $('#' + id);
+        e[0].runtime.resetView();
     }
 
-    reset(id) {
+    isometric(id) {
         this.changeviewpoint(id, "iso");
     }
 
@@ -56,30 +58,28 @@ class CqJupyter {
         e.runtime.fitAll(false);
     };
 
-    toggle(id, name) {
+    face_toggle(id, name) {
         var shape = this.findShape(id, name);
+        var icon = $("#face_toggle_" + name + "_" + id)[0].children[0]
+        
         if (shape[0].getAttribute("render") == "true") {
             shape[0].setAttribute("render", false);
-        }
-        else {
+            icon.setAttribute("src", "./cq_jupyter/imgs/hidden.png")
+        } else {
             shape[0].setAttribute("render", true);
-        }
-        if (shape[1].getAttribute("whichChoice") == 0) {
-            shape[1].setAttribute("whichChoice", -1);
-        }
-        else {
-            shape[1].setAttribute("whichChoice", 0);
+            icon.setAttribute("src", "./cq_jupyter/imgs/visible.png")
         }
     };
 
-    wire(id, name) {
+    edge_toggle(id, name) {
         var shape = this.findShape(id, name);
-        if (shape[0].getAttribute("render") == "true") {
-            shape[0].setAttribute("render", false);
+        var icon = $("#edge_toggle_" + name + "_" + id)[0].children[0]
+        if (shape[1].getAttribute("whichChoice") == -1) {
+            shape[1].setAttribute("whichChoice", 0);
+            icon.setAttribute("src", "./cq_jupyter/imgs/mesh.png")
+        } else {
+            shape[1].setAttribute("whichChoice", -1);
+            icon.setAttribute("src", "./cq_jupyter/imgs/no_mesh.png")
         }
-        else {
-            shape[0].setAttribute("render", true);
-        }
-        shape[1].setAttribute("whichChoice", 0);
-    };
+   };
 }

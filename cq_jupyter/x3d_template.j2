@@ -8,25 +8,37 @@
 
 <div style='height: {{divheight}}px; width: 100%;' width='100%' height='{{divheight}}px' id='cq_viewer_{{id}}'>
     <div class="Row">
-        <span onclick="cqJupyter.refit('{{id}}')">  [fit]</span>
-        <span onclick="cqJupyter.reset('{{id}}')">  [reset]</span>
-        <span onclick="cqJupyter.front('{{id}}')">  [front]</span>
-        <span onclick="cqJupyter.right('{{id}}')">  [right]</span>
-        <span onclick="cqJupyter.rear('{{id}}')">   [rear]</span>
-        <span onclick="cqJupyter.left('{{id}}')">   [left]</span>
-        <span onclick="cqJupyter.top('{{id}}')">    [top]</span>
-        <span onclick="cqJupyter.bottom('{{id}}')"> [bottom]</span>
-    <div>
+        <div class="shaded bordered">
+            <span class="IconWrapper borderedDark" onclick="cqJupyter.refit('{{id}}')">     <img class="Icon" src="./cq_jupyter/imgs/fit.png"/> </span>
+            <span class="IconWrapper borderedDark" onclick="cqJupyter.isometric('{{id}}')"> <img class="Icon" src="./cq_jupyter/imgs/isometric.png"/> </span>
+            <span class="IconWrapper borderedDark" onclick="cqJupyter.front('{{id}}')">     <img class="Icon" src="./cq_jupyter/imgs/front.png"/> </span>
+            <span class="IconWrapper borderedDark" onclick="cqJupyter.right('{{id}}')">     <img class="Icon" src="./cq_jupyter/imgs/right.png"/> </span>
+            <span class="IconWrapper borderedDark" onclick="cqJupyter.rear('{{id}}')">      <img class="Icon" src="./cq_jupyter/imgs/rear.png"/> </span>
+            <span class="IconWrapper borderedDark" onclick="cqJupyter.left('{{id}}')">      <img class="Icon" src="./cq_jupyter/imgs/left.png"/> </span>
+            <span class="IconWrapper borderedDark" onclick="cqJupyter.top('{{id}}')">       <img class="Icon" src="./cq_jupyter/imgs/top.png"/> </span>
+            <span class="IconWrapper borderedDark" onclick="cqJupyter.bottom('{{id}}')">    <img class="Icon" src="./cq_jupyter/imgs/bottom.png"/> </span>
+        </div>
+    </div>
     <div class="Row" id='cq_viewer_row_{{id}}'>
-        <div class="NavColumn" id='cq_nav_column_{{id}}'>
-            {% for part, name in parts.items() %}
-            <span id='toggle_{{part}}_{{id}}' onclick="cqJupyter.toggle('{{id}}', '{{name}}')">[toggle]</span>
-            <span id='wire_{{part}}_{{id}}' onclick="cqJupyter.wire('{{id}}', '{{name}}')"> [wire] </span>
-            <span> {{part}}</span>
+        <div class="NavColumn shaded bordered" id='cq_nav_column_{{id}}'>
+            <div class="NavTitle">PARTS</div>
+            {% for part, attrs in parts.items() %}
+            <div class="NavEntries">
+                <div class="NavWrapper">
+                    <span id='face_toggle_{{attrs.name}}_{{id}}' class="IconWrapperSmall borderedDark" onclick="cqJupyter.face_toggle('{{id}}', '{{attrs.name}}')">
+                        <img class="Icon" src="./cq_jupyter/imgs/visible.png" style="display:block"/>
+                    </span>
+                    <span id='edge_toggle_{{attrs.name}}_{{id}}' class="IconWrapperSmall borderedDark" onclick="cqJupyter.edge_toggle('{{id}}', '{{attrs.name}}')">
+                        <img class="Icon" src="./cq_jupyter/imgs/mesh.png" style="visibilty:block"/>
+                    </span>
+                    <span class="PartColor" id="part_color_{{part}}_{{id}}" style="background:{{attrs.color}}">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <span class="NavEntry"> {{part}}</span>
+                </div>
+            </div>
             {% endfor %}
         </div>
         <div class="ViewerColumn" id='cq_x3d_column_{{id}}'>
-            <x3d class="cqviewer" style='height: {{height}}px; width: 100%;' id='{{id}}' width='100%'>
+            <x3d class="cqviewer bordered" style='height: {{height}}px; width: 100%;' id='{{id}}' width='100%'>
                 <scene>
                     {% for view, vp in viewpoints.items() %}
                     <Viewpoint id='{{id}}_{{view}}_view' 
@@ -118,4 +130,10 @@
     console.log($("Initializing x3dom for view {{id}}"))
     x3dom.reload();
     $("#x3domAxisSceneView_{{id}}").viewConnector({connected: "{{id}}", connectPosition: false});
+    {% for part, attrs in parts.items() %}
+        cqJupyter.edge_toggle("{{id}}", "{{attrs.name}}");
+        {% if not attrs.visible %}
+            cqJupyter.face_toggle("{{id}}", "{{attrs.name}}");
+        {% endif %}
+    {% endfor %}
 </script>
