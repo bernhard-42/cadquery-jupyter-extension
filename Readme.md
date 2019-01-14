@@ -78,3 +78,6 @@ The extension is self contained, however monkey patches the `_repr_html_` method
     - the file `js/jquery.viewConnector.js` is downloaded from [https://github.com/x3dom/component-editor/blob/master/static/js/jquery.viewConnector.js](https://github.com/x3dom/component-editor/blob/master/static/js/jquery.viewConnector.js) and used unchanged
     - the axis part in the file `x3d_template.j2` is based on [https://github.com/x3dom/component-editor/blob/master/static/x3d/axesSmall.x3d](https://github.com/x3dom/component-editor/blob/master/static/x3d/axesSmall.x3d)
 
+## License
+
+This software is licensed under the MIT license, see [LICENSE](./LICENSE)
