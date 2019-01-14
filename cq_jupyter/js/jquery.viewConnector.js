@@ -57,7 +57,7 @@
                 dest = this._connectedScene.runtime;
 
             var viewpoint_type = ''
-            var is_ortho = ($(this._scene).find('orthoviewpoint')[0] !== "undefined")
+            var is_ortho = (typeof($(this._connectedScene).find('OrthoViewpoint')[0]) !== "undefined")
             if (is_ortho) {
                 viewpoint_type = 'OrthoViewpoint'
                 console.log('Using OrthoViewpoint')
