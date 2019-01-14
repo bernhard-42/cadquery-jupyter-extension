@@ -56,9 +56,16 @@
             var origin = this._scene.runtime,
                 dest = this._connectedScene.runtime;
 
-            /* TODO add orthoviewpoint to the selector */
-    //        $(this._scene).find('orthoviewpoint').on('viewpointChanged', function(event) {
-            $(this._scene).find('viewpoint').on('viewpointChanged', function(event) {
+            var viewpoint_type = ''
+            var is_ortho = ($(this._scene).find('orthoviewpoint')[0] !== "undefined")
+            if (is_ortho) {
+                viewpoint_type = 'OrthoViewpoint'
+                console.log('Using OrthoViewpoint')
+            } else {
+                viewpoint_type = 'Viewpoint'
+                console.log('Using Viewpoint')
+            }
+            $(this._scene).find(viewpoint_type).on('viewpointChanged', function(event) {
                 if(self.active != origin && self.active != null ) return;
                 self.active = origin;
                 clearTimeout(self._reset);
@@ -68,9 +75,7 @@
                 self.setOrientation(origin, dest, event.originalEvent)
             });
 
-            /* TODO add orthoviewpoint to the selector */
-    //        $(this._connectedScene).find('orthoviewpoint').on('viewpointChanged', function(event) {
-            $(this._connectedScene).find('viewpoint').on('viewpointChanged', function(event) {
+            $(this._connectedScene).find(viewpoint_type).on('viewpointChanged', function(event) {
                 if(self.active != dest && self.active != null ) return;
                 self.active = dest;
                 clearTimeout(self._reset);
