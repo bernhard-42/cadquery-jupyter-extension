@@ -6,13 +6,21 @@ An extension to view X3DOM content created by CadQuery 2.x
 
 Two new classes are available:
 
-- Part: A CadQuery shape plus
+- `Part`: A CadQuery shape plus some attributes for it:
 
-  - Part name in the view
-  - Part color in the view
-  - Part visibility in the view
+  - `shape`: the cadquery shape
+  - `name`: Part name in the view
+  - `color`: Part color in the view
+  - `visible`: Part visibility in the view
 
-- Assembly: Basically a list of parts and the height attribute of the view
+- `Assembly`: Basically a list of parts and some attributes for the view:
+
+  - `parts`: all parts included in the assembly (as args and not as a list)
+  - `height`: height of the view div (default: 400)
+  - `ortho`: use orthographic view (default: True)
+  - `fov`: field of view (used only for ortho=False) (default: 0.1)
+  - `debug`: print html string including the x3dom string for debugging (default: False)
+
 
 Example:
 
@@ -25,17 +33,33 @@ box1.cut(box2)
 Assembly(
     Part(box1, "red box", (1,0,0), visible=True), 
     Part(box2, "green box", (0,1,0), visible=False),
-    height=600
+
+    height=600,   # height of the view div
+    ortho=True,   # use orthographic view
+    fov=0.1,      # field of view (used only for ortho=False)
+    debug=False   # print html string including the x3dom string for debugging
 )
 ```
 
-- Isometric view:
+- Normal view:
 
-    ![Isometric view](./isometric.png)
+  - **Isometric view**:
+  
+      ![Isometric view](./screenshots/isometric-non-ortho.png)
+  
+  - Side view:
+  
+      ![Side View](./screenshots/side-non-ortho.png)
 
-- Side view:
+- **Orthographic view**:
 
-    ![Side View](./side.png)
+  - Isometric view:
+  
+      ![Isometric view](./screenshots/isometric-ortho.png)
+  
+  - Side view:
+  
+      ![Side View](./screenshots/side-ortho.png)
 
 ## Integration into CadQuery
 
@@ -57,10 +81,6 @@ The extension is self contained, however monkey patches the `_repr_html_` method
     jupyter nbextension install cq-jupyter --user
     jupyter nbextension enable cq-jupyter/js/main --user
     ```
-
-## TODOs
-
-- OrthoViewPoint
 
 ## Credits
 
