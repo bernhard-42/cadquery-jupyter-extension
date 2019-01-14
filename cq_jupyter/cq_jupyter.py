@@ -172,7 +172,7 @@ class Part(object):
         return "rgba(%d, %d, %d, 0.6)" % tuple([c*255 for c in self.color])
         
 class Assembly(object):
-    def __init__(self, *parts, ortho=True, fov=0.1, height=400, x=1, debug=False):
+    def __init__(self, *parts, ortho=True, fov=0.1, height=400, debug=False):
         self.parts = parts
         self.height = height
         self.fov = fov
