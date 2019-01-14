@@ -7,18 +7,6 @@
 </script>
 
 <div style='height: {{divheight}}px; width: 100%;' width='100%' height='{{divheight}}px' id='cq_viewer_{{id}}'>
-    {# <div class="Row">
-        <div class="shaded bordered">
-            <span class="IconWrapper borderedDark" onclick="cqJupyter.refit('{{id}}')">     <img class="Icon" src="./cq_jupyter/imgs/fit.png"/> </span>
-            <span class="IconWrapper borderedDark" onclick="cqJupyter.isometric('{{id}}')"> <img class="Icon" src="./cq_jupyter/imgs/isometric.png"/> </span>
-            <span class="IconWrapper borderedDark" onclick="cqJupyter.front('{{id}}')">     <img class="Icon" src="./cq_jupyter/imgs/front.png"/> </span>
-            <span class="IconWrapper borderedDark" onclick="cqJupyter.right('{{id}}')">     <img class="Icon" src="./cq_jupyter/imgs/right.png"/> </span>
-            <span class="IconWrapper borderedDark" onclick="cqJupyter.rear('{{id}}')">      <img class="Icon" src="./cq_jupyter/imgs/rear.png"/> </span>
-            <span class="IconWrapper borderedDark" onclick="cqJupyter.left('{{id}}')">      <img class="Icon" src="./cq_jupyter/imgs/left.png"/> </span>
-            <span class="IconWrapper borderedDark" onclick="cqJupyter.top('{{id}}')">       <img class="Icon" src="./cq_jupyter/imgs/top.png"/> </span>
-            <span class="IconWrapper borderedDark" onclick="cqJupyter.bottom('{{id}}')">    <img class="Icon" src="./cq_jupyter/imgs/bottom.png"/> </span>
-        </div>
-    </div> #}
     <div class="Row" id='cq_viewer_row_{{id}}'>
         <div class="NavColumn shaded bordered" id='cq_nav_column_{{id}}'>
             <div class="NavTitle">PARTS</div>
@@ -51,12 +39,12 @@
             <x3d class="cqviewer bordered" style='height: {{height}}px; width: 100%;' id='{{id}}' width='100%'>
                 <scene>
                     {% for view, vp in viewpoints.items() %}
-                    <Viewpoint id='{{id}}_{{view}}_view' 
+                    <{{viewpoint_type}} id='{{id}}_{{view}}_view' 
                                centerOfRotation='{{x0}} {{y0}} {{z0}}' 
                                position='{{vp["viewpoint"][0]}} {{vp["viewpoint"][1]}} {{vp["viewpoint"][2]}}' 
                                orientation='{{vp["axis"][0]}} {{vp["axis"][1]}} {{vp["axis"][2]}} {{vp["angle"]}}' 
                                fieldOfView='{{fov}}'>
-                    </Viewpoint>
+                    </{{viewpoint_type}}>
                     {% endfor %}
 
                     {{src}}
@@ -137,7 +125,7 @@
 </div>
 
 <script>
-    console.log($("Initializing x3dom for view {{id}}"))
+    console.log("Initializing x3dom for view {{id}}")
     x3dom.reload();
     $("#x3domAxisSceneView_{{id}}").viewConnector({connected: "{{id}}", connectPosition: false});
     {% for part, attrs in parts.items() %}
