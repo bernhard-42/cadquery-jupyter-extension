@@ -1,1 +1,1 @@
-from .cq_jupyter import Assembly, Part, DEBUG
+from .cq_jupyter import Assembly, Part

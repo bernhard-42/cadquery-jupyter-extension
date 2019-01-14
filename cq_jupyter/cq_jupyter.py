@@ -10,9 +10,7 @@ import jinja2
 from cadquery.occ_impl.geom import BoundBox
 from cadquery import Shape, Compound
 
-DEBUG = False
 N_HEADER_LINES = 11
-FOV = 0.1
 
 def _gp_Vec_repr(self):
     return "gp_Vec(%f, %f, %f)" % (self.X(), self.Y(), self.Z())
@@ -65,8 +63,7 @@ def viewpoint(axis, angle, center, dist):
     viewpoint = center.wrapped + (viewDir * dist)
     return {"viewpoint": gp_Vec2list(viewpoint), "axis": gp_Vec2list(axis), "angle": angle}
 
-
-def add_x3d_boilerplate(src, parts, viewpoints, height=400, center=(0,0,0), fov=FOV):
+def add_x3d_boilerplate(src, parts, viewpoint_type, viewpoints, height=400, center=(0,0,0), fov=0.1, debug=False):
     id = uuid4()
     print("View id:", id)
 
@@ -79,11 +76,12 @@ def add_x3d_boilerplate(src, parts, viewpoints, height=400, center=(0,0,0), fov=
                            parts=parts,
                            id=id,
                            height=height, divheight=height+100,
+                           viewpoint_type=viewpoint_type,
                            viewpoints=viewpoints,
                            x0=center[0], y0=center[1], z0=center[2],
                            fov=fov)
 
-    if DEBUG:
+    if debug:
         print(html)
     return html
 
@@ -97,7 +95,10 @@ def x3d_display(*parts,
                 line_color=(0,0,0),
                 line_width=2.,
                 mesh_quality=.3,
-                height=400):
+                ortho=False,
+                fov=0.1,
+                height=400,
+                debug=False):
 
         x3d_str = ""
         for i, part in enumerate(parts):
@@ -122,10 +123,15 @@ def x3d_display(*parts,
         bb = BoundBox._fromTopoDS(compound)
         d = [0.5*b for b in (bb.xlen, bb.ylen, bb.zlen)]
         c = bb.center
-
-        tanfov2 = tan(FOV / 2.0)
-        dist = sqrt(sum([x*x for x in d])) / tanfov2
-
+        
+        if ortho:
+            viewpoint_type = "OrthoViewpoint"
+            dist = sqrt(sum([x*x for x in d]))
+            fov = "%f %f %f %f" % (-dist, -dist, dist, dist)
+        else:
+            viewpoint_type = "Viewpoint"
+            tanfov2 = tan(fov / 2.0)
+            dist = sqrt(sum([x*x for x in d])) / tanfov2
         viewpoints = {}
         viewpoints["iso"] = viewpoint(*isometric(),c, dist)
         viewpoints["top"] = viewpoint(*top(), c, dist)
@@ -142,9 +148,12 @@ def x3d_display(*parts,
                                         "visible": part.visible
                                         } 
                                         for i, part in enumerate(parts)},
-                                   viewpoints,
+                                   viewpoint_type=viewpoint_type,
+                                   viewpoints=viewpoints,
                                    center=(c.x,c.y,c.z),
-                                   height=height)
+                                   height=height,
+                                   fov=fov,
+                                   debug=debug)
 
 #
 # Create simple Part and Assembly classes
@@ -163,17 +172,25 @@ class Part(object):
         return "rgba(%d, %d, %d, 0.6)" % tuple([c*255 for c in self.color])
         
 class Assembly(object):
-    def __init__(self, *parts, height=400):
+    def __init__(self, *parts, ortho=True, fov=0.1, height=400, x=1, debug=False):
         self.parts = parts
         self.height = height
-        
+        self.fov = fov
+        self.debug = debug
+        self.ortho = ortho
+
     def _repr_html_(self):
         assembly = []
         for part in self.parts:
             # Replace original shape with compound
             assembly.append(Part(Compound.makeCompound(part.shape.objects), part.name, part.color, part.visible))
-
-        return x3d_display(*assembly, export_edges=True, height=self.height)
+        
+        return x3d_display(*assembly, 
+                           export_edges=True, 
+                           height=self.height, 
+                           ortho=self.ortho, 
+                           fov=self.fov,
+                           debug=self.debug)
 
 #
 # Monkey patching caqdquery to replace the _repr_html_ code
