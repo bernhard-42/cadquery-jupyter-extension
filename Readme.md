@@ -41,23 +41,23 @@ Assembly(
 )
 ```
 
-- Normal view:
+- **Normal view**:
 
-  - **Isometric view**:
+  - **Isometric**:
   
       ![Isometric view](./screenshots/isometric-non-ortho.png)
   
-  - Side view:
+  - **Side**:
   
       ![Side View](./screenshots/side-non-ortho.png)
 
-- **Orthographic view**:
+- **Orthographic**:
 
-  - Isometric view:
+  - **Isometric**:
   
       ![Isometric view](./screenshots/isometric-ortho.png)
   
-  - Side view:
+  - **Side**:
   
       ![Side View](./screenshots/side-ortho.png)
 
