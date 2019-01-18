@@ -64,10 +64,10 @@ class CqJupyter {
         
         if (shape[0].getAttribute("render") == "true") {
             shape[0].setAttribute("render", false);
-            icon.setAttribute("src", "./cq_jupyter/imgs/hidden.png")
+            icon.setAttribute("src", "../nbextensions/cq_jupyter/imgs/hidden.png")
         } else {
             shape[0].setAttribute("render", true);
-            icon.setAttribute("src", "./cq_jupyter/imgs/visible.png")
+            icon.setAttribute("src", "../nbextensions/cq_jupyter/imgs/visible.png")
         }
     };
 
@@ -76,10 +76,10 @@ class CqJupyter {
         var icon = $("#edge_toggle_" + name + "_" + id)[0].children[0]
         if (shape[1].getAttribute("whichChoice") == -1) {
             shape[1].setAttribute("whichChoice", 0);
-            icon.setAttribute("src", "./cq_jupyter/imgs/mesh.png")
+            icon.setAttribute("src", "../nbextensions/cq_jupyter/imgs/mesh.png")
         } else {
             shape[1].setAttribute("whichChoice", -1);
-            icon.setAttribute("src", "./cq_jupyter/imgs/no_mesh.png")
+            icon.setAttribute("src", "../nbextensions/cq_jupyter/imgs/no_mesh.png")
         }
    };
 }

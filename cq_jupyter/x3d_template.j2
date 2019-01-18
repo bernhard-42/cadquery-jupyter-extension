@@ -14,10 +14,10 @@
             <div class="NavEntries">
                 <div class="NavWrapper">
                     <span id='face_toggle_{{attrs.name}}_{{id}}' class="IconWrapperSmall borderedDark" onclick="cqJupyter.face_toggle('{{id}}', '{{attrs.name}}')">
-                        <img class="Icon" src="./cq_jupyter/imgs/visible.png" style="display:block"/>
+                        <img class="Icon" src="../nbextensions/cq_jupyter/imgs/visible.png" style="display:block"/>
                     </span>
                     <span id='edge_toggle_{{attrs.name}}_{{id}}' class="IconWrapperSmall borderedDark" onclick="cqJupyter.edge_toggle('{{id}}', '{{attrs.name}}')">
-                        <img class="Icon" src="./cq_jupyter/imgs/mesh.png" style="visibilty:block"/>
+                        <img class="Icon" src="../nbextensions/cq_jupyter/imgs/mesh.png" style="visibilty:block"/>
                     </span>
                     <span class="PartColor" id="part_color_{{part}}_{{id}}" style="background:{{attrs.color}}">&nbsp;&nbsp;&nbsp;&nbsp;</span>
                     <span class="NavEntry"> {{part}}</span>
@@ -27,14 +27,14 @@
         </div>
         <div class="ViewerColumn" id='cq_x3d_column_{{id}}'>
             <div class="shaded bordered">
-                <span class="IconWrapper borderedDark" onclick="cqJupyter.refit('{{id}}')">     <img class="Icon" src="./cq_jupyter/imgs/fit.png"/> </span>
-                <span class="IconWrapper borderedDark" onclick="cqJupyter.isometric('{{id}}')"> <img class="Icon" src="./cq_jupyter/imgs/isometric.png"/> </span>
-                <span class="IconWrapper borderedDark" onclick="cqJupyter.front('{{id}}')">     <img class="Icon" src="./cq_jupyter/imgs/front.png"/> </span>
-                <span class="IconWrapper borderedDark" onclick="cqJupyter.right('{{id}}')">     <img class="Icon" src="./cq_jupyter/imgs/right.png"/> </span>
-                <span class="IconWrapper borderedDark" onclick="cqJupyter.rear('{{id}}')">      <img class="Icon" src="./cq_jupyter/imgs/rear.png"/> </span>
-                <span class="IconWrapper borderedDark" onclick="cqJupyter.left('{{id}}')">      <img class="Icon" src="./cq_jupyter/imgs/left.png"/> </span>
-                <span class="IconWrapper borderedDark" onclick="cqJupyter.top('{{id}}')">       <img class="Icon" src="./cq_jupyter/imgs/top.png"/> </span>
-                <span class="IconWrapper borderedDark" onclick="cqJupyter.bottom('{{id}}')">    <img class="Icon" src="./cq_jupyter/imgs/bottom.png"/> </span>
+                <span class="IconWrapper borderedDark" onclick="cqJupyter.refit('{{id}}')">     <img class="Icon" src="../nbextensions/cq_jupyter/imgs/fit.png"/> </span>
+                <span class="IconWrapper borderedDark" onclick="cqJupyter.isometric('{{id}}')"> <img class="Icon" src="../nbextensions/cq_jupyter/imgs/isometric.png"/> </span>
+                <span class="IconWrapper borderedDark" onclick="cqJupyter.front('{{id}}')">     <img class="Icon" src="../nbextensions/cq_jupyter/imgs/front.png"/> </span>
+                <span class="IconWrapper borderedDark" onclick="cqJupyter.right('{{id}}')">     <img class="Icon" src="../nbextensions/cq_jupyter/imgs/right.png"/> </span>
+                <span class="IconWrapper borderedDark" onclick="cqJupyter.rear('{{id}}')">      <img class="Icon" src="../nbextensions/cq_jupyter/imgs/rear.png"/> </span>
+                <span class="IconWrapper borderedDark" onclick="cqJupyter.left('{{id}}')">      <img class="Icon" src="../nbextensions/cq_jupyter/imgs/left.png"/> </span>
+                <span class="IconWrapper borderedDark" onclick="cqJupyter.top('{{id}}')">       <img class="Icon" src="../nbextensions/cq_jupyter/imgs/top.png"/> </span>
+                <span class="IconWrapper borderedDark" onclick="cqJupyter.bottom('{{id}}')">    <img class="Icon" src="../nbextensions/cq_jupyter/imgs/bottom.png"/> </span>
             </div>
             <x3d class="cqviewer bordered" style='height: {{height}}px; width: 100%;' id='{{id}}' width='100%'>
                 <scene>
