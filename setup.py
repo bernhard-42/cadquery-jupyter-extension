@@ -13,7 +13,7 @@ setup(
     license = "Apache License 2.0",
     keywords = "x3dom cadquery visualisations",
     packages=['cq_jupyter'],
-    package_data={'cq_jupyter': ['js/*', 'css/*']},
+    package_data={'cq_jupyter': ['js/*', 'css/*', '*.j2']},
     long_description=read('Readme.md'),
     classifiers=[
         "Development Status :: 4 - Beta",
