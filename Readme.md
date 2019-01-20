@@ -53,12 +53,14 @@ box2 = b.transformed(offset=cq.Vector(0, 1.5, 0.8)).box(3,2,1).edges(">Z").fille
 box1.cut(box2)
 
 Assembly(
-    Part(box1, "red box", (1,0,0), visible=True), 
-    Part(box2, "green box", (0,1,0), visible=False),
-
-    height=600,   # height of the view div
+    "example",
+    [
+        Part(box1, "red box", (1,0,0)),
+        Part(box2, "green box", (0,1,0))
+    ],
+    height=400,   # height of the view div
     ortho=True,   # use orthographic view
-    fov=0.1,      # field of view (used only for ortho=False)
+    fov=0.4,      # field of view (used only for ortho=False)
     debug=False   # print html string including the x3dom string for debugging
 )
 ```
@@ -66,21 +68,21 @@ Assembly(
 - **Normal view**:
 
   - **Isometric**:
-  
+
       ![Isometric view](./screenshots/isometric-non-ortho.png)
-  
+
   - **Side**:
-  
+
       ![Side View](./screenshots/side-non-ortho.png)
 
 - **Orthographic View**:
 
   - **Isometric**:
-  
+
       ![Isometric view](./screenshots/isometric-ortho.png)
-  
+
   - **Side**:
-  
+
       ![Side View](./screenshots/side-ortho.png)
 
 
@@ -96,7 +98,7 @@ Assembly(
 
 - Component Editor for x3dom
 
-    The Component Editor for x3dom ([https://github.com/x3dom/component-editor](https://github.com/x3dom/component-editor)) is available under the MIT license ([https://github.com/x3dom/component-editor/blob/master/LICENSE](https://github.com/x3dom/component-editor/blob/master/LICENSE)): 
+    The Component Editor for x3dom ([https://github.com/x3dom/component-editor](https://github.com/x3dom/component-editor)) is available under the MIT license ([https://github.com/x3dom/component-editor/blob/master/LICENSE](https://github.com/x3dom/component-editor/blob/master/LICENSE)):
 
     - the file `js/jquery.viewConnector.js` is downloaded from [https://github.com/x3dom/component-editor/blob/master/static/js/jquery.viewConnector.js](https://github.com/x3dom/component-editor/blob/master/static/js/jquery.viewConnector.js) and used unchanged
 
