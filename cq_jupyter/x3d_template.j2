@@ -4,26 +4,15 @@
         console.log("Initializing CqJupyter")
         window.cqJupyter = new CqJupyter()
     }
+    data = {{tree}};
+    navTree($, "{{id}}", data, window.cqJupyter);
 </script>
 
 <div style='height: {{divheight}}px; width: 100%;' width='100%' height='{{divheight}}px' id='cq_viewer_{{id}}'>
     <div class="Row" id='cq_viewer_row_{{id}}'>
         <div class="NavColumn shaded bordered" id='cq_nav_column_{{id}}'>
             <div class="NavTitle">PARTS</div>
-            {% for part, attrs in parts.items() %}
-            <div class="NavEntries">
-                <div class="NavWrapper">
-                    <span id='face_toggle_{{attrs.name}}_{{id}}' class="IconWrapperSmall borderedDark" onclick="cqJupyter.face_toggle('{{id}}', '{{attrs.name}}')">
-                        <img class="Icon" src="../nbextensions/cq_jupyter/imgs/visible.png" style="display:block"/>
-                    </span>
-                    <span id='edge_toggle_{{attrs.name}}_{{id}}' class="IconWrapperSmall borderedDark" onclick="cqJupyter.edge_toggle('{{id}}', '{{attrs.name}}')">
-                        <img class="Icon" src="../nbextensions/cq_jupyter/imgs/mesh.png" style="visibilty:block"/>
-                    </span>
-                    <span class="PartColor" id="part_color_{{part}}_{{id}}" style="background:{{attrs.color}}">&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                    <span class="NavEntry"> {{part}}</span>
-                </div>
-            </div>
-            {% endfor %}
+            <div class="NavEntries"><div id="tree-{{id}}"></div></div>
         </div>
         <div class="ViewerColumn" id='cq_x3d_column_{{id}}'>
             <div class="shaded bordered">
@@ -39,17 +28,17 @@
             <x3d class="cqviewer bordered" style='height: {{height}}px; width: 100%;' id='{{id}}' width='100%'>
                 <scene>
                     {% for view, vp in viewpoints.items() %}
-                    <{{viewpoint_type}} id='{{id}}_{{view}}_view' 
-                               centerOfRotation='{{x0}} {{y0}} {{z0}}' 
-                               position='{{vp["viewpoint"][0]}} {{vp["viewpoint"][1]}} {{vp["viewpoint"][2]}}' 
-                               orientation='{{vp["axis"][0]}} {{vp["axis"][1]}} {{vp["axis"][2]}} {{vp["angle"]}}' 
+                    <{{viewpoint_type}} id='{{id}}_{{view}}_view'
+                               centerOfRotation='{{x0}} {{y0}} {{z0}}'
+                               position='{{vp["viewpoint"][0]}} {{vp["viewpoint"][1]}} {{vp["viewpoint"][2]}}'
+                               orientation='{{vp["axis"][0]}} {{vp["axis"][1]}} {{vp["axis"][2]}} {{vp["angle"]}}'
                                fieldOfView='{{fov}}'>
                     </{{viewpoint_type}}>
                     {% endfor %}
 
                     {{src}}
                 </scene>
-            </x3d>        
+            </x3d>
         </div>
 
         <div>
@@ -57,7 +46,7 @@
                 <scene>
                     <navigationInfo type='"NONE" "ANY"'></navigationInfo>
                     <viewpoint position="0 0 5.0"  orientation="0 0 0 1"></viewpoint>
-                    <Transform id="axes">        
+                    <Transform id="axes">
                         <!-- X arrow and label -->
                         <Shape isPickable="false" DEF="AXIS_LINE_X">
                             <IndexedLineSet index="0 1 -1">
@@ -78,7 +67,7 @@
                             </Transform>
                         </Transform>
 
-                        <!-- Y arrow and label -->                            
+                        <!-- Y arrow and label -->
                         <Shape isPickable="false" DEF="AXIS_LINE_Y">
                             <IndexedLineSet index="0 1 -1">
                                 <Coordinate point="0 0 0., 0 1 0" color="0 1 0, 0 1 0"></Coordinate>
@@ -119,7 +108,7 @@
                         </Transform>
                     </Transform>
                 </scene>
-            </x3d> 
+            </x3d>
         <div>
     </div>
 </div>
@@ -128,10 +117,4 @@
     console.log("Initializing x3dom for view {{id}}")
     x3dom.reload();
     $("#x3domAxisSceneView_{{id}}").viewConnector({connected: "{{id}}", connectPosition: false});
-    {% for part, attrs in parts.items() %}
-        cqJupyter.edge_toggle("{{id}}", "{{attrs.name}}");
-        {% if not attrs.visible %}
-            cqJupyter.face_toggle("{{id}}", "{{attrs.name}}");
-        {% endif %}
-    {% endfor %}
 </script>

@@ -1,85 +1,80 @@
-class CqJupyter {
+class CqJupyter { // jshint ignore:line
 
     constructor() {
-        x3dom.reload();
+        x3dom.reload(); // jshint ignore:line
     }
 
     findShape(id, name) {
-        var cq = $('#cq_x3d_column_' + id);
-        var children = cq.find("scene").children();
+        var cq = $('#cq_x3d_column_' + id); // jshint ignore:line
+        var children = cq.find('scene').children();
         var shape = null;
         var swtch = null;
         for (var i = 0; i < children.length; i++) {
-            if (children[i].getAttribute("DEF") == name) {
+            if (children[i].getAttribute('DEF') === name) {
                 shape = children[i];
                 swtch = children[i + 1];
                 break;
             }
         }
         return [shape, swtch];
-    };
+    }
 
     changeviewpoint(id, dir) {
-        document.getElementById(id +"_" + dir +"_view").setAttribute('set_bind','true');
-        var e = $('#' + id);
+        document.getElementById(id + '_' + dir + '_view').setAttribute('set_bind','true');
+        var e = $('#' + id); // jshint ignore:line
         e[0].runtime.resetView();
     }
 
     isometric(id) {
-        this.changeviewpoint(id, "iso");
+        this.changeviewpoint(id, 'iso');
     }
 
     right(id) {
-        this.changeviewpoint(id, "right");
+        this.changeviewpoint(id, 'right');
     }
 
     left(id) {
-        this.changeviewpoint(id, "left");
+        this.changeviewpoint(id, 'left');
     }
 
     front(id) {
-        this.changeviewpoint(id, "front");
+        this.changeviewpoint(id, 'front');
     }
 
     rear(id) {
-        this.changeviewpoint(id, "rear");
+        this.changeviewpoint(id, 'rear');
     }
 
     bottom(id) {
-        this.changeviewpoint(id, "bottom");
+        this.changeviewpoint(id, 'bottom');
     }
 
     top(id) {
-        this.changeviewpoint(id, "top");
+        this.changeviewpoint(id, 'top');
     }
 
     refit(id) {
         var e = document.getElementById(id);
         e.runtime.fitAll(false);
-    };
+    }
 
-    face_toggle(id, name) {
+    showFaces(id, name) {
         var shape = this.findShape(id, name);
-        var icon = $("#face_toggle_" + name + "_" + id)[0].children[0]
-        
-        if (shape[0].getAttribute("render") == "true") {
-            shape[0].setAttribute("render", false);
-            icon.setAttribute("src", "../nbextensions/cq_jupyter/imgs/hidden.png")
-        } else {
-            shape[0].setAttribute("render", true);
-            icon.setAttribute("src", "../nbextensions/cq_jupyter/imgs/visible.png")
-        }
-    };
+        shape[0].setAttribute('render', true);
+    }
 
-    edge_toggle(id, name) {
-        var shape = this.findShape(id, name);
-        var icon = $("#edge_toggle_" + name + "_" + id)[0].children[0]
-        if (shape[1].getAttribute("whichChoice") == -1) {
-            shape[1].setAttribute("whichChoice", 0);
-            icon.setAttribute("src", "../nbextensions/cq_jupyter/imgs/mesh.png")
-        } else {
-            shape[1].setAttribute("whichChoice", -1);
-            icon.setAttribute("src", "../nbextensions/cq_jupyter/imgs/no_mesh.png")
-        }
-   };
+    hideFaces(id, name) {
+      var shape = this.findShape(id, name);
+      shape[0].setAttribute('render', false);
+    }
+
+    showEdges(id, name) {
+      var shape = this.findShape(id, name);
+      shape[1].setAttribute('whichChoice', 0);
+    }
+
+    hideEdges(id, name) {
+      var shape = this.findShape(id, name);
+      shape[1].setAttribute('whichChoice', -1);
+    }
 }

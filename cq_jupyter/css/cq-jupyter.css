@@ -1,13 +1,5 @@
-.container { 
-    width:95% !important; 
-}
-.NavEntries {
-    white-space: nowrap;
-}
-
-.NavWrapper {
-    white-space: nowrap;
-    padding: 2px 0 2px 0;
+.container {
+    width:95% !important;
 }
 
 .bordered {
@@ -28,6 +20,16 @@
     background-color: #eee;
 }
 
+.NavEntries {
+    white-space: nowrap;
+}
+
+.NavWrapper {
+    white-space: nowrap;
+    padding: 2px 0 2px 0;
+}
+
+
 .Row {
     display: table;
     width: 100%;
@@ -35,7 +37,7 @@
     border-spacing: 0px;
     border-width: 1px;
     border-color: #ccc;
-    
+
 }
 
 .ViewerColumn {
@@ -49,10 +51,6 @@
     width: 200px;
     vertical-align: top;
     overflow: scroll;
-}
-
-.NavEntry {
-    vertical-align: middle;
 }
 
 .NavTitle {
@@ -93,12 +91,57 @@ X3D, x3d {
     cursor: pointer;
 }
 
-.PartColor {
-    width: 15px;
-    height: 15px;
+.tree_icon {
+    width: 23px;
+    height: 20px;
     vertical-align: middle;
-    background: #fff;
-    border: #aaa;
-    border-style: solid;
-    border-width: 1px;
+    padding-left: 0px;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    background-size: 23px 20px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.show_shape {
+    background-image: url('../imgs/shape.png');
+}
+
+.hide_shape {
+    background-image: url('../imgs/no_shape.png');
+}
+
+.mix_shape {
+    background-image: url('../imgs/mix_shape.png');
+}
+
+.show_mesh {
+    background-image: url('../imgs/mesh.png');
+    margin-right: 5px;
+}
+
+.hide_mesh {
+    background-image: url('../imgs/no_mesh.png');
+    margin-right: 5px;
+}
+
+.mix_mesh {
+    background-image: url('../imgs/mix_mesh.png');
+    margin-right: 5px;
+}
+
+/* overrides for default values */
+
+ul.jqtree-tree .jqtree-element {
+    cursor: default;
+}
+
+ul.jqtree_common.jqtree-tree {
+    padding-left: 0px;
+}
+
+ul.jqtree-tree .jqtree-toggler {
+    cursor: pointer;
+    font-size: 10px;
+    width: 20px;
 }
