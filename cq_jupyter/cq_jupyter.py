@@ -130,5 +130,5 @@ def _repr_html_(self):
     """
     return x3d_display(Part(self, "shape0", (1, 1, 0)), export_edges=True)
 
-print("Monkey patching _repr_html() of cadquery.Shape")
+print("Integrating notebook extension into cadquery.Shape")
 Shape._repr_html_ = _repr_html_
