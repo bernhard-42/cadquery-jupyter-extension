@@ -72,7 +72,7 @@ class Part(CADObject):
         return "rgba(%d, %d, %d, 0.6)" % tuple([c * 255 for c in self.color])
 
     def _repr_html_(self):
-        return x3d_display(Assembly("assembly", [self]))
+        return x3d_display(Assembly("assembly", [self]), ortho=True)
 
 class Assembly(CADObject):
 
@@ -129,7 +129,7 @@ def _repr_html_(self):
     Jupyter 3D representation support
     """
     part = Part(CQ(self), "part", (1, 1, 0))
-    return x3d_display(Assembly("assembly", [part]))
+    return x3d_display(Assembly("assembly", [part]), ortho=True)
 
 print("Integrating notebook extension into cadquery.Shape")
 Shape._repr_html_ = _repr_html_
