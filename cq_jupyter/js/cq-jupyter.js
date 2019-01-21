@@ -64,17 +64,17 @@ class CqJupyter { // jshint ignore:line
     }
 
     hideFaces(id, name) {
-      var shape = this.findShape(id, name);
-      shape[0].setAttribute('render', false);
+        var shape = this.findShape(id, name);
+        shape[0].setAttribute('render', false);
     }
 
     showEdges(id, name) {
-      var shape = this.findShape(id, name);
-      shape[1].setAttribute('whichChoice', 0);
+        var shape = this.findShape(id, name);
+        shape[1].setAttribute('whichChoice', 0);
     }
 
     hideEdges(id, name) {
-      var shape = this.findShape(id, name);
-      shape[1].setAttribute('whichChoice', -1);
+        var shape = this.findShape(id, name);
+        shape[1].setAttribute('whichChoice', -1);
     }
 }
