@@ -74,7 +74,7 @@ class Part(CADObject):
 
 class Assembly(CADObject):
 
-    def __init__(self, name, objects, show_shape=True, show_mesh=True, ortho=True, fov=0.1, height=400, debug=False):
+    def __init__(self, name, objects, ortho=True, fov=0.1, height=400, debug=False):
         self.name = name
         self.id = self.next_id()
         self.objects = objects
@@ -82,8 +82,6 @@ class Assembly(CADObject):
         self.fov = fov
         self.debug = debug
         self.ortho = ortho
-        self.show_shape = show_shape
-        self.show_mesh = show_mesh
 
     def parts(self):
         result = []
@@ -105,8 +103,8 @@ class Assembly(CADObject):
             "type": "assembly",
             "name": self.name,
             "id": self.id,
-            "shape": int(self.show_shape),
-            "mesh": int(self.show_mesh),
+            "shape": 1,
+            "mesh": 1,
             "children": [obj.to_nav_dict() for obj in self.objects]
         }
 
