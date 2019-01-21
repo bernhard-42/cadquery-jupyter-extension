@@ -16,8 +16,14 @@ function navTree($, divId, data, cqJupyter) { // jshint ignore:line
         onCreateLi: function (node, $li) {
             var title = $li.find('.jqtree-title');
             title.html(`<span class="toggle_shape tree_icon ${icons.shape[node.shape]}" data-shape-id=${node.id}></span>` +
-            `<span class="toggle_mesh tree_icon  ${icons.mesh[node.mesh]}"   data-mesh-id=${node.id}> </span>` +
+                       `<span class="toggle_mesh tree_icon  ${icons.mesh[node.mesh]}"   data-mesh-id=${node.id}> </span>` +
             title.html());
+            if (node.type === 'part') {
+                setObject(node, "shape");
+                adaptAssembly($tree.tree('getTree').children, "shape");
+                setObject(node, "mesh");
+                adaptAssembly($tree.tree('getTree').children, "mesh");
+            }
         }
     });
 
