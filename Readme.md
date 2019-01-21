@@ -11,11 +11,13 @@ Two classes are available:
     - `shape`: the cadquery shape
     - `name`: Part name in the view
     - `color`: Part color in the view
-    - `visible`: Part visibility in the view
+    - `show_shape`: show the faces of this particulat part
+    - `show_mesh`: show the edges of this particular part
 
 - `Assembly`: Basically a list of parts and some attributes for the view:
 
-    - `parts`: all parts included in the assembly (as args and not as a list)
+    - `name`: Assembly  name in the view
+    - `objects`: all parts and assemblies included in the assembly as a list
     - `height`: height of the view div (default: 400)
     - `ortho`: use orthographic view (default: True)
     - `fov`: field of view (used only for ortho=False) (default: 0.1)
