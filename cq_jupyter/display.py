@@ -5,6 +5,17 @@ import jinja2
 from OCC.Display.WebGl.x3dom_renderer import X3DExporter
 from cadquery.occ_impl.geom import BoundBox
 
+import cadquery
+import cq_jupyter
+try:
+    import cqparts
+    from cqparts.display.material import COLOR
+    has_cqparts = True
+except:
+    has_cqparts = False
+
+import IPython
+
 from .viewpoint import viewpoint, isometric, top, bottom, front, rear, left, right
 
 N_HEADER_LINES = 11
@@ -53,8 +64,9 @@ def x3d_display(assembly,
 
     x3d_str = ""
     for part in assembly.parts():
-        exporter = X3DExporter(part.compound().wrapped, vertex_shader, fragment_shader, export_edges, part.color,
-                               part.color, shininess, transparency, line_color, line_width, mesh_quality)
+        exporter = X3DExporter(part.compound().wrapped, vertex_shader, fragment_shader, export_edges, 
+                               part.color, part.color, shininess, transparency, line_color, 
+                               line_width, mesh_quality)
 
         exporter.compute()
 
@@ -93,3 +105,63 @@ def x3d_display(assembly,
         height=height,
         fov=fov,
         debug=debug)
+
+
+
+def convertCqparts(cqpartAssembly, name="root", default_color=None):
+    if default_color is None:
+        default_color = (255, 255, 0)
+            
+    cqpartAssembly.solve()
+    
+    parts = []
+    for k,v in cqpartAssembly._components.items():
+        if isinstance(v, cqparts.Part):
+            color = v._render.color
+            if isinstance(color, (list, tuple)):
+                pass
+            elif isinstance(color, string):
+                color = COLOR.get(color)
+                if color is None:
+                    color = default_color
+            else:
+                color = default_color
+            color = tuple((c / 255.0 for c in color))
+            parts.append(cq_jupyter.Part(v.world_obj, k, color))
+        else:
+            parts.append(convertCqparts(v, k, default_color))
+    return cq_jupyter.Assembly(name, parts)
+
+def display(cadObj, ortho=True, debug=False, default_color=None):
+    """
+    Jupyter 3D representation support
+    """
+    if default_color is None:
+        default_color = (255, 255, 0)
+
+    def _display(html):
+        IPython.display.display(IPython.display.HTML(html))
+        
+    if isinstance(cadObj, cadquery.Shape):
+        part = cq_jupyter.Part(cadquery.CQ(cadObj), "part", default_color)
+        _display(x3d_display(cq_jupyter.Assembly("root", [part]), ortho=ortho, debug=debug))
+
+    elif isinstance(cadObj, cadquery.Workplane):
+        part = cq_jupyter.Part(cadObj, "part", default_color)
+        _display(x3d_display(cq_jupyter.Assembly("root", [part]), ortho=ortho, debug=debug))
+        
+    elif isinstance(cadObj, cq_jupyter.Assembly):
+        _display(x3d_display(cadObj, export_edges=True, height=cadObj.height, ortho=cadObj.ortho, 
+                 fov=cadObj.fov, debug=cadObj.debug))
+    
+    elif isinstance(cadObj, cq_jupyter.Part):
+        _display(x3d_display(cq_jupyter.Assembly("root", [cadObj]), ortho=ortho, debug=debug))
+    
+    elif has_cqparts and isinstance(cadObj, cqparts.Assembly):
+        assembly = convertCqparts(cadObj)
+        display(assembly)
+    elif has_cqparts and isinstance(cadObj, cqparts.Part):
+        part = cq_jupyter.Part(cadObj.local_obj,"part", default_color)
+        display(part)
+    else:
+        return cadObj

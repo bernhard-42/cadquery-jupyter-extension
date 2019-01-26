@@ -71,8 +71,8 @@ class Part(CADObject):
     def web_color(self):
         return "rgba(%d, %d, %d, 0.6)" % tuple([c * 255 for c in self.color])
 
-    def _repr_html_(self):
-        return x3d_display(Assembly("assembly", [self]), ortho=True)
+    # def _repr_html_(self):
+    #     return x3d_display(Assembly("assembly", [self]), ortho=True)
 
 class Assembly(CADObject):
 
@@ -110,26 +110,11 @@ class Assembly(CADObject):
             "children": [obj.to_nav_dict() for obj in self.objects]
         }
 
-    def _repr_html_(self):
-        return x3d_display(
-            self, export_edges=True, height=self.height, ortho=self.ortho, fov=self.fov, debug=self.debug)
+    # def _repr_html_(self):
+    #     return x3d_display(
+    #         self, export_edges=True, height=self.height, ortho=self.ortho, fov=self.fov, debug=self.debug)
 
     @classmethod
     def reset_id(cls):
         global part_id
         part_id = 0
-
-
-#
-# Monkey patching caqdquery to replace the _repr_html_ code
-#
-
-def _repr_html_(self):
-    """
-    Jupyter 3D representation support
-    """
-    part = Part(CQ(self), "part", (1, 1, 0))
-    return x3d_display(Assembly("assembly", [part]), ortho=True)
-
-print("Integrating notebook extension into cadquery.Shape")
-Shape._repr_html_ = _repr_html_
