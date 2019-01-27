@@ -2,9 +2,11 @@
 
 ## Overview
 
-An extension to view X3DOM content created by CadQuery 2.x
+An extension to view X3DOM content created by CadQuery 2 ([https://github.com/CadQuery/cadquery](https://github.com/CadQuery/cadquery)). 
 
-If CQParts () is not used, two simple alternative classes are available:
+**Note:** The extension relies on *PythonOCC* and will not run with the *FreeCAD* version of *CadQuery 1* or *CadQuery 2*.
+
+If CQParts ([https://github.com/cqparts/cqparts](https://github.com/cqparts/cqparts)) is not used, two simple alternative classes are available:
 
 - `Part`: A CadQuery shape plus some attributes for it:
 
@@ -61,7 +63,7 @@ or  `cq_jupyter.Part`
 
 ## CadQuery Example 
 
-see [examples/CadQuery-Example.ipynb](./examples/Example.ipynb)
+see [examples/CadQuery-Example.ipynb](./examples/CadQuery-Example.ipynb)
 
 ```python
 b = cq.Workplane('XY')
@@ -122,17 +124,25 @@ Source: [https://cqparts.github.io/cqparts/doc/tutorials/assembly.html]( https:/
 
 ![Wire view](./screenshots/cqparts-toy-car-wires.png)
 
+
+## Known issues
+
+- **Too many WebGL contexts**: Browsers only support a fixed number of WebGL contexts. When this number is exceeded by rendereing multiple CadQuery objects or repeatedly rendering one object, a warning appears in the Javascript console "*WARNING: Too many active WebGL contexts. Oldest context will be lost.*" and older renderings in the notebook get lost.
+
+- **CQParts warning**: CQParts shows the warning about "*solving for Assembly without world coordinates ...*", however, works fine
+
+
 ## Credits
 
-- The viewer
+- **The viewer**
 
     The idea is based on the original implementation in cadquery 2, however leverages a proper Jupyter notebook extension and a Jinja2 template
 
-- x3dom
+- **x3dom**
 
     The x3dom framework ([https://www.x3dom.org](https://www.x3dom.org)) is available under the MIT license ([https://github.com/x3dom/component-editor/blob/master/LICENSE](https://github.com/x3dom/component-editor/blob/master/LICENSE)) and the files `css/x3dom.css` and `js/x3dom.js` are downloaded from [https://www.x3dom.org/download/1.7.2](https://www.x3dom.org/download/1.7.2) and used unchanged.
 
-- Component Editor for x3dom
+- **Component Editor for x3dom**
 
     The Component Editor for x3dom ([https://github.com/x3dom/component-editor](https://github.com/x3dom/component-editor)) is available under the MIT license ([https://github.com/x3dom/component-editor/blob/master/LICENSE](https://github.com/x3dom/component-editor/blob/master/LICENSE)):
 
