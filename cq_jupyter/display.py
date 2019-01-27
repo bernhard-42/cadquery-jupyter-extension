@@ -120,7 +120,7 @@ def convertCqparts(cqpartAssembly, name="root", default_color=None):
             color = v._render.color
             if isinstance(color, (list, tuple)):
                 pass
-            elif isinstance(color, string):
+            elif isinstance(color, str):
                 color = COLOR.get(color)
                 if color is None:
                     color = default_color
