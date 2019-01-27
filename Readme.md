@@ -4,7 +4,7 @@
 
 An extension to view X3DOM content created by CadQuery 2.x
 
-Two classes are available:
+If CQParts () is not used, two simple alternative classes are available:
 
 - `Part`: A CadQuery shape plus some attributes for it:
 
@@ -23,11 +23,24 @@ Two classes are available:
     - `fov`: field of view (used only for ortho=False) (default: 0.1)
     - `debug`: print html string including the x3dom string for debugging (default: False)
 
-A result of type `Assembly` will be automatically rendered by this extension (using `_repr_html_`)
+## Integration into CadQuery and CQParts
 
-## Integration into CadQuery
+The extension is self contained, and comes with `display` function.
+`display(cadObj, ortho=True, debug=False, default_color=None)`
 
-The extension is self contained, however monkey patches the `_repr_html_` method of the `Shape` class.
+- `cadObj` can be an instance of:
+
+    - `cadquery.Shape`
+    - `cadquery.Workplane`
+    - `cq_jupyter.Assembly`
+    - `cq_jupyter.Part`
+    - `cqparts.Assembly`
+    - `cqparts.Part`
+
+- `ortho = True` means orthographic view else normal x3dom view
+- `debug = True` allows to print out the HTML string of the view
+- `default_color` allows to set a default color if not set via `cq_jupyter.Assembly`
+or  `cq_jupyter.Part`
 
 ## Installation
 
@@ -46,7 +59,9 @@ The extension is self contained, however monkey patches the `_repr_html_` method
     jupyter nbextension enable cq-jupyter/js/main --user
     ```
 
-## Example
+## CadQuery Example 
+
+see [examples/CadQuery-Example.ipynb](./examples/Example.ipynb)
 
 ```python
 b = cq.Workplane('XY')
@@ -54,7 +69,7 @@ box1 = b.box(1,2,3).edges(">X").chamfer(0.1)
 box2 = b.transformed(offset=cq.Vector(0, 1.5, 0.8)).box(3,2,1).edges(">Z").fillet(0.1)
 box1.cut(box2)
 
-Assembly(
+a = Assembly(
     "example",
     [
         Part(box1, "red box", (1,0,0)),
@@ -65,6 +80,7 @@ Assembly(
     fov=0.4,      # field of view (used only for ortho=False)
     debug=False   # print html string including the x3dom string for debugging
 )
+display(a)
 ```
 
 - **Normal view**:
@@ -87,6 +103,24 @@ Assembly(
 
       ![Side View](./screenshots/side-ortho.png)
 
+
+## CQParts Example
+
+see [examples/CQParts-Example.ipynb](./examples/CQParts-Example.ipynb)
+
+Source: [https://cqparts.github.io/cqparts/doc/tutorials/assembly.html]( https://cqparts.github.io/cqparts/doc/tutorials/assembly.html)
+
+- **Complete Toy car**
+
+![Toy Car](./screenshots/cqparts-toy-car.png)
+
+- **Chassis only**
+
+![Chassis](./screenshots/cqparts-toy-car-chassis.png)
+
+- **Partly edges only**
+
+![Wire view](./screenshots/cqparts-toy-car-wires.png)
 
 ## Credits
 
