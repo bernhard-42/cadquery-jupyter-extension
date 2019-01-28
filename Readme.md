@@ -20,15 +20,14 @@ If CQParts ([https://github.com/cqparts/cqparts](https://github.com/cqparts/cqpa
 
     - `name`: Assembly  name in the view
     - `objects`: all parts and assemblies included in the assembly as a list
-    - `height`: height of the view div (default: 400)
-    - `ortho`: use orthographic view (default: True)
-    - `fov`: field of view (used only for ortho=False) (default: 0.1)
-    - `debug`: print html string including the x3dom string for debugging (default: False)
 
 ## Integration into CadQuery and CQParts
 
+### Display a CAD object
+
 The extension is self contained, and comes with `display` function.
-`display(cadObj, ortho=True, debug=False, default_color=None)`
+
+`display(cadObj, ortho=True, debug=False, default_color=None)` with:
 
 - `cadObj` can be an instance of:
 
@@ -39,10 +38,28 @@ The extension is self contained, and comes with `display` function.
     - `cqparts.Assembly`
     - `cqparts.Part`
 
+- `height`: height of the view div (default: 400)
 - `ortho = True` means orthographic view else normal x3dom view
+- `fov`: field of view (used only for ortho=False) (default: 0.1)
 - `debug = True` allows to print out the HTML string of the view
-- `default_color` allows to set a default color if not set via `cq_jupyter.Assembly`
-or  `cq_jupyter.Part`
+- `default_color` allows to set a default color if not set via `cq_jupyter.Assembly` or  `cq_jupyter.Part`
+
+### Export a CAD object to STL
+
+Simple helper to export an CAD object to STL
+
+`exportSTL(cadObj, filename="/tmp/test.stl")` with:
+
+- `cadObj` can again be an instance of:
+
+    - `cadquery.Shape`
+    - `cadquery.Workplane`
+    - `cq_jupyter.Assembly`
+    - `cq_jupyter.Part`
+    - `cqparts.Assembly`
+    - `cqparts.Part`
+
+- `filename`: Path to STL write to write to.
 
 ## Installation
 
@@ -76,13 +93,14 @@ a = Assembly(
     [
         Part(box1, "red box", (1,0,0)),
         Part(box2, "green box", (0,1,0))
-    ],
+    ]
+)
+display(a,
     height=400,   # height of the view div
     ortho=True,   # use orthographic view
     fov=0.4,      # field of view (used only for ortho=False)
     debug=False   # print html string including the x3dom string for debugging
 )
-display(a)
 ```
 
 - **Normal view**:
@@ -114,22 +132,20 @@ Source: [https://cqparts.github.io/cqparts/doc/tutorials/assembly.html]( https:/
 
 - **Complete Toy car**
 
-![Toy Car](./screenshots/cqparts-toy-car.png)
+    ![Toy Car](./screenshots/cqparts-toy-car.png)
 
 - **Chassis only**
 
-![Chassis](./screenshots/cqparts-toy-car-chassis.png)
+    ![Chassis](./screenshots/cqparts-toy-car-chassis.png)
 
 - **Partly edges only**
 
-![Wire view](./screenshots/cqparts-toy-car-wires.png)
+    ![Wire view](./screenshots/cqparts-toy-car-wires.png)
 
 
 ## Known issues
 
 - **Too many WebGL contexts**: Browsers only support a fixed number of WebGL contexts. When this number is exceeded by rendereing multiple CadQuery objects or repeatedly rendering one object, a warning appears in the Javascript console "*WARNING: Too many active WebGL contexts. Oldest context will be lost.*" and older renderings in the notebook get lost.
-
-- **CQParts warning**: CQParts shows the warning about "*solving for Assembly without world coordinates ...*", however, works fine
 
 
 ## Credits
