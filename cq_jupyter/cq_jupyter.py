@@ -71,19 +71,13 @@ class Part(CADObject):
     def web_color(self):
         return "rgba(%d, %d, %d, 0.6)" % tuple([c * 255 for c in self.color])
 
-    # def _repr_html_(self):
-    #     return x3d_display(Assembly("assembly", [self]), ortho=True)
 
 class Assembly(CADObject):
 
-    def __init__(self, name, objects, ortho=True, fov=0.1, height=400, debug=False):
+    def __init__(self, name, objects):
         self.name = name
         self.id = self.next_id()
         self.objects = objects
-        self.height = height
-        self.fov = fov
-        self.debug = debug
-        self.ortho = ortho
 
     def parts(self):
         result = []
@@ -109,10 +103,6 @@ class Assembly(CADObject):
             "mesh": 1,
             "children": [obj.to_nav_dict() for obj in self.objects]
         }
-
-    # def _repr_html_(self):
-    #     return x3d_display(
-    #         self, export_edges=True, height=self.height, ortho=self.ortho, fov=self.fov, debug=self.debug)
 
     @classmethod
     def reset_id(cls):
