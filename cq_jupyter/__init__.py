@@ -1,5 +1,6 @@
 from .cq_jupyter import Assembly, Part
 from .display import display
+from .export import exportSTL
 import cadquery
 
 #
