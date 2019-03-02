@@ -10,10 +10,19 @@ class CqJupyter { // jshint ignore:line
         var shape = null;
         var swtch = null;
         for (var i = 0; i < children.length; i++) {
-            if (children[i].getAttribute('DEF') === name) {
-                shape = children[i];
+            var _shape = $(children[i]).find("shape")[0]
+            if ((typeof (_shape) != "undefined") && (_shape.getAttribute('def') === name)) {
+                shape = _shape;
                 swtch = children[i + 1];
                 break;
+            }
+            if (shape == null) {
+                // Try python-occ 0.18.1
+                if (children[i].getAttribute('DEF') === name) {
+                    shape = children[i];
+                    swtch = children[i + 1];
+                    break;
+                }
             }
         }
         return [shape, swtch];
