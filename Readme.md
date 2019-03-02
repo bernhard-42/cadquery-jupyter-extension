@@ -74,8 +74,8 @@ Simple helper to export an CAD object to STL
 - Enabling the extension
 
     ```bash
-    jupyter nbextension install cq-jupyter --user
-    jupyter nbextension enable cq-jupyter/js/main --user
+    jupyter nbextension install cq_jupyter --user
+    jupyter nbextension enable cq_jupyter/js/main --user
     ```
 
 ## CadQuery Example 
