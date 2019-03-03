@@ -63,17 +63,35 @@ def x3d_display(assembly,
                 height=400,
                 debug=False):
 
-    x3d_str = ""
-    for part in assembly.parts():
-        exporter = X3DExporter(part.compound().wrapped, vertex_shader, fragment_shader, export_edges, 
-                               part.color, part.color, shininess, transparency, line_color, 
-                               line_width, mesh_quality)
+    def _to_x3dstr(cadObj):
+        if isinstance(cadObj, cq_jupyter.Part):
+            part = cadObj
+            exporter = X3DExporter(part.compound().wrapped, vertex_shader, fragment_shader, export_edges, 
+                                part.color, part.color, shininess, transparency, line_color, 
+                                line_width, mesh_quality)
+            exporter.compute()
+            x3d_str_shape =  exporter.to_x3dfile_string(part.id)
+            return '\n'.join(x3d_str_shape.splitlines()[N_HEADER_LINES:-2])
+        elif isinstance(cadObj, cq_jupyter.Assembly):
+            assembly = cadObj
+            x3d_str = ""
+            for cadObj in assembly.parts():
+                x3d_str += _to_x3dstr(cadObj)
+            return x3d_str
+        else:
+            print("ERROR")
 
-        exporter.compute()
+    # x3d_str = ""
+    # for part in assembly.parts():
+    #     exporter = X3DExporter(part.compound().wrapped, vertex_shader, fragment_shader, export_edges, 
+    #                            part.color, part.color, shininess, transparency, line_color, 
+    #                            line_width, mesh_quality)
 
-        x3d_str_shape = exporter.to_x3dfile_string(part.id)
-        x3d_str += '\n'.join(x3d_str_shape.splitlines()[N_HEADER_LINES:-2]) + "\n"
+    #     exporter.compute()
 
+    #     x3d_str_shape = exporter.to_x3dfile_string(part.id)
+    #     x3d_str += '\n'.join(x3d_str_shape.splitlines()[N_HEADER_LINES:-2]) + "\n"
+    
     compound = assembly.compound().wrapped
 
     bb = BoundBox._fromTopoDS(compound)
@@ -98,7 +116,7 @@ def x3d_display(assembly,
     viewpoints["right"] = viewpoint(*right(), c, dist)
 
     return add_x3d_boilerplate(
-        x3d_str,
+        _to_x3dstr(assembly),
         tree=assembly.to_nav_json(),
         viewpoint_type=viewpoint_type,
         viewpoints=viewpoints,
