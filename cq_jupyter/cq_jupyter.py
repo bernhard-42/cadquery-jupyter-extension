@@ -20,16 +20,16 @@ class CADObject(object):
         return part_id
 
     def parts(self):
-        raise ("not implemented yet")
+        raise NotImplementedError("not implemented yet")
 
     def compound(self):
-        raise ("not implemented yet")
+        raise NotImplementedError("not implemented yet")
 
     def compounds(self):
-        raise ("not implemented yet")
+        raise NotImplementedError("not implemented yet")
 
     def to_nav_dict(self):
-        raise ("not implemented yet")
+        raise NotImplementedError("not implemented yet")
 
     def to_nav_json(self):
         return json.dumps([self.to_nav_dict()], indent=2)
