@@ -4,7 +4,7 @@ import json
 import cadquery as cq
 from cadquery import Shape, Compound, CQ
 
-from .display import x3d_display
+from .display import display
 
 part_id = 0
 
@@ -13,6 +13,9 @@ part_id = 0
 #
 
 class CADObject(object):
+
+    def __init__(self):
+        self.color = (1, 1, 0)
 
     def next_id(self):
         global part_id
@@ -37,13 +40,18 @@ class CADObject(object):
     def web_color(self):
         return "rgba(%d, %d, %d, 0.6)" % tuple([c * 255 for c in self.color])
 
+    def _repr_html_(self):
+        display(self)
+
 
 class Part(CADObject):
 
-    def __init__(self, shape, name, color=None, show_shape=True, show_mesh=True):
+    def __init__(self, shape, name="part", color=None, show_shape=True, show_mesh=True):
+        super().__init__()
         self.name = name
         self.id = self.next_id()
-        self.color = (1, 1, 0) if color is None else color
+        if color is not None:
+            self.color = color
         self.shape = shape
         self._compound = Compound.makeCompound(shape.objects)
         self.show_shape = show_shape
@@ -71,17 +79,21 @@ class Part(CADObject):
 
 
 class Faces(Part):
-    
-    pass
+
+    def __init__(self, shape, name="faces", color=None, show_shape=True, show_mesh=True):
+        super().__init__(shape, name, color, show_shape, show_mesh)
 
 
 class Edges(CADObject):
 
-    def __init__(self, edges, name, color=None):
+    def __init__(self, edges, name="edges", color=None):
+        super().__init__()
         self.edges = edges
         self.name = name
+        self._compound = Compound.makeCompound(edges.objects)
         self.id = self.next_id()
-        self.color = (1, 0, 0) if color is None else color
+        if color is not None:
+            self.color = color
 
     def to_nav_dict(self):
         return {
@@ -94,11 +106,11 @@ class Edges(CADObject):
             "mesh": 1
         }
 
-    def compounds(self):
-        return []
-
     def compound(self):
-        return Compound.makeCompound([])
+        return self._compound
+
+    def compounds(self):
+        return [self._compound]
 
     def parts(self):
         return [self]
@@ -106,7 +118,8 @@ class Edges(CADObject):
 
 class Assembly(CADObject):
 
-    def __init__(self, name, objects):
+    def __init__(self, objects, name="assembly"):
+        super().__init__()
         self.name = name
         self.id = self.next_id()
         self.objects = objects

@@ -4,7 +4,7 @@
 function navTree($, divId, data, cqJupyter) { // jshint ignore:line
     var icons = {
         mesh: ['hide_mesh', 'show_mesh', 'mix_mesh'],
-        shape: ['hide_shape', 'show_shape', 'mix_shape']
+        shape: ['hide_shape', 'show_shape', 'mix_shape', 'empty']
     };
 
     var $tree = $(`#tree-${divId}`);

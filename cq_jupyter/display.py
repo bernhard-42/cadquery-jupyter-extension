@@ -188,14 +188,14 @@ def display(cadObj, height=400, ortho=True, fov=0.2, debug=False, default_color=
         IPython.display.display(IPython.display.HTML(html))
 
     if isinstance(cadObj, cadquery.Shape):
-        part = cq_jupyter.Part(cadquery.CQ(cadObj), "part", default_color)
-        html = x3d_display(cq_jupyter.Assembly("root", [part]),
+        part = cq_jupyter.Part(cadquery.CQ(cadObj), color=default_color)
+        html = x3d_display(cq_jupyter.Assembly([part]),
                            export_edges=True, height=height, ortho=ortho, fov=fov, debug=debug)
         _display(html)
 
     elif isinstance(cadObj, cadquery.Workplane):
-        part = cq_jupyter.Part(cadObj, "part", default_color)
-        html = x3d_display(cq_jupyter.Assembly("root", [part]),
+        part = cq_jupyter.Part(cadObj, color=default_color)
+        html = x3d_display(cq_jupyter.Assembly([part]),
                            export_edges=True, height=height, ortho=ortho, fov=fov, debug=debug)
         _display(html)
 
@@ -204,8 +204,8 @@ def display(cadObj, height=400, ortho=True, fov=0.2, debug=False, default_color=
                            export_edges=True, height=height, ortho=ortho, fov=fov, debug=debug)
         _display(html)
 
-    elif isinstance(cadObj, cq_jupyter.Part):
-        html = x3d_display(cq_jupyter.Assembly("root", [cadObj]),
+    elif isinstance(cadObj, (cq_jupyter.Part, cq_jupyter.Edges, cq_jupyter.Faces)):
+        html = x3d_display(cq_jupyter.Assembly([cadObj]),
                            export_edges=True, height=height, ortho=ortho, fov=fov, debug=debug)
         _display(html)
 
@@ -214,7 +214,7 @@ def display(cadObj, height=400, ortho=True, fov=0.2, debug=False, default_color=
         assembly = convertCqparts(cadObj)
         display(assembly)
     elif has_cqparts and isinstance(cadObj, cqparts.Part):
-        part = cq_jupyter.Part(cadObj.local_obj,"part", default_color)
+        part = cq_jupyter.Part(cadObj.local_obj, color=default_color)
         display(part)
     else:
         return cadObj
