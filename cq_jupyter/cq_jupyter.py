@@ -90,7 +90,7 @@ class Edges(CADObject):
             "id": self.id,
             "x3d_name": "edges%d" % self.id,
             "color": self.web_color(),
-            "shape": 0,
+            "shape": 3,
             "mesh": 1
         }
 

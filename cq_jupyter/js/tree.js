@@ -53,25 +53,32 @@ function navTree($, divId, data, cqJupyter) { // jshint ignore:line
         var status = [];
         for (var i = 0; i < tree.length; i++) {
             var node = tree[i];
-            if ((node.type === 'part') || (node.type === 'edges')) {
+            console.log(node.type, node.name, feature, node[feature])
+            if (node.type === 'part') {
                 status.push(node[feature]);
             } else if (node.type === 'assembly') {
                 var s = adaptAssembly(node.children, feature);
                 node[feature] = s;
                 setFeature(node.id, feature, s);
                 status.push(s);
+            } else if (node.type === 'edges') {
+                if (feature === "mesh") {
+                    status.push(node[feature]);
+                }
             } else {
                 console.log(`Wrong node type ${node.type}`);
             }
         }
+        console.log(status)
         if ((status.length > 0) && status.every((val, i, arr) => val === arr[0])) {
             return status[0];
         } else {
-            return 1;
+            return 2;
         }
     }
 
     function propagateAssembly(node, feature, status) {
+        console.log(node, feature, status)
         if (node.type === 'part') {
             node[feature] = status;
             setFeature(node.id, feature, status);
