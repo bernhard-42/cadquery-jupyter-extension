@@ -183,7 +183,7 @@ def display(*cadObjs, height=400, ortho=True, fov=0.2, debug=False, default_colo
     Jupyter 3D representation support
     """
     if default_color is None:
-        default_color = (255, 255, 0)
+        default_color = (0.9, 0.9, 0.9)
 
     def _display(cadObj):
         html = x3d_display(cadObj, export_edges=True, height=height, ortho=ortho, fov=fov, debug=debug)

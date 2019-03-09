@@ -15,7 +15,7 @@ part_id = 0
 class CADObject(object):
 
     def __init__(self):
-        self.color = (1, 1, 0)
+        self.color = (0.9, 0.9, 0.9)
 
     def next_id(self):
         global part_id
@@ -179,9 +179,9 @@ def repr_html(obj):
     Jupyter 3D representation support
     """
     if is_edges(obj):
-        cadObj = Edges(obj, "edges")
+        cadObj = Edges(obj, name="edges", color=(1, 0, 0))
     elif is_faces(obj):
-        cadObj = Faces(obj, "faces")
+        cadObj = Faces(obj, name="faces", color=(0, 1, 0))
     else:
         cadObj = obj
 
