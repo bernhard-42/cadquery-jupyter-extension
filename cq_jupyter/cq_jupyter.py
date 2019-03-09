@@ -172,3 +172,17 @@ def convert(cadObj):
         return Faces(cadObj, color=(0, 1, 0))
     else:
         return Part(cadObj, color=(0.9, 0.9, 0.9), show_edges=False)
+
+
+def repr_html(obj):
+    """
+    Jupyter 3D representation support
+    """
+    if is_edges(obj):
+        cadObj = Edges(obj, "edges")
+    elif is_faces(obj):
+        cadObj = Faces(obj, "faces")
+    else:
+        cadObj = obj
+
+    return display(cadObj)
