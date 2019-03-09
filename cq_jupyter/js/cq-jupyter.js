@@ -6,26 +6,11 @@ class CqJupyter { // jshint ignore:line
 
     findShape(id, name) {
         var cq = $('#cq_x3d_column_' + id); // jshint ignore:line
-        var children = cq.find('scene').children();
-        var shape = null;
-        var swtch = null;
-        for (var i = 0; i < children.length; i++) {
-            var _shape = $(children[i]).find("shape")[0]
-            if ((typeof (_shape) != "undefined") && (_shape.getAttribute('def') === name)) {
-                shape = _shape;
-                swtch = children[i + 1];
-                break;
-            }
-            if (shape == null) {
-                // Try python-occ 0.18.1
-                if (children[i].getAttribute('DEF') === name) {
-                    shape = children[i];
-                    swtch = children[i + 1];
-                    break;
-                }
-            }
-        }
-        return [shape, swtch];
+        return cq.find("#switch_" + name)[0];
+    }
+    findMesh(id, name) {
+        var cq = $('#cq_x3d_column_' + id); // jshint ignore:line
+        return cq.find("#switch_" + name + "_edges")[0]
     }
 
     changeviewpoint(id, dir) {
@@ -68,22 +53,18 @@ class CqJupyter { // jshint ignore:line
     }
 
     showFaces(id, name) {
-        var shape = this.findShape(id, name);
-        shape[0].setAttribute('render', true);
+        this.findShape(id, name).setAttribute('whichChoice', 0);
     }
 
     hideFaces(id, name) {
-        var shape = this.findShape(id, name);
-        shape[0].setAttribute('render', false);
+        this.findShape(id, name).setAttribute('whichChoice', -1);
     }
 
-    showEdges(id, name) {
-        var shape = this.findShape(id, name);
-        shape[1].setAttribute('whichChoice', 0);
+    showMesh(id, name) {
+        this.findMesh(id, name).setAttribute('whichChoice', 0);
     }
 
-    hideEdges(id, name) {
-        var shape = this.findShape(id, name);
-        shape[1].setAttribute('whichChoice', -1);
+    hideMesh(id, name) {
+        this.findMesh(id, name).setAttribute('whichChoice', -1);
     }
 }

@@ -34,17 +34,18 @@ class CADObject(object):
     def to_nav_json(self):
         return json.dumps([self.to_nav_dict()], indent=2)
 
+    def web_color(self):
+        return "rgba(%d, %d, %d, 0.6)" % tuple([c * 255 for c in self.color])
+
 
 class Part(CADObject):
 
     def __init__(self, shape, name, color=None, show_shape=True, show_mesh=True):
         self.name = name
         self.id = self.next_id()
-        if color is None:
-            color = (1, 1, 0)
+        self.color = (1, 1, 0) if color is None else color
         self.shape = shape
         self._compound = Compound.makeCompound(shape.objects)
-        self.color = color
         self.show_shape = show_shape
         self.show_mesh = show_mesh
 
@@ -68,8 +69,39 @@ class Part(CADObject):
             "mesh": int(self.show_mesh)
         }
 
-    def web_color(self):
-        return "rgba(%d, %d, %d, 0.6)" % tuple([c * 255 for c in self.color])
+
+class Faces(Part):
+    
+    pass
+
+
+class Edges(CADObject):
+
+    def __init__(self, edges, name, color=None):
+        self.edges = edges
+        self.name = name
+        self.id = self.next_id()
+        self.color = (1, 0, 0) if color is None else color
+
+    def to_nav_dict(self):
+        return {
+            "type": "edges",
+            "name": self.name,
+            "id": self.id,
+            "x3d_name": "edges%d" % self.id,
+            "color": self.web_color(),
+            "shape": 0,
+            "mesh": 1
+        }
+
+    def compounds(self):
+        return []
+
+    def compound(self):
+        return Compound.makeCompound([])
+
+    def parts(self):
+        return [self]
 
 
 class Assembly(CADObject):

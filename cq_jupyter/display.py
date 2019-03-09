@@ -1,8 +1,11 @@
 from uuid import uuid4
 from math import tan, sqrt
 import os
+import xml.etree.ElementTree as ET
+
 import jinja2
-from OCC.Display.WebGl.x3dom_renderer import X3DExporter
+from OCC.Display.WebGl.x3dom_renderer import X3DExporter, ExportEdgeToILS
+from OCC.Extend.TopologyUtils import discretize_edge
 from cadquery.occ_impl.geom import BoundBox
 
 import cadquery
@@ -48,6 +51,25 @@ def add_x3d_boilerplate(src, tree, viewpoint_type, viewpoints, height=400, cente
     return html
 
 
+# adapted from https://github.com/tpaviot/pythonocc-core/blob/cf83d18dd875c493095b2876468671d07e65af6c/src/Display/WebGl/x3dom_renderer.py#L173
+def _indexed_lineset_to_x3d_string(str_linesets, id, color, ils_id=0):
+    if color is None:
+        color = (1, 0, 0)
+
+    x3dfile_str = "<Switch whichChoice='0' id='swBRP'>\n"
+    x3dfile_str += "\t<Group>\n"
+
+    for str_lineset in str_linesets:
+        x3dfile_str += "\t\t<Transform scale='1 1 1'><Shape DEF='edg%s'>\n" % id
+        x3dfile_str += "\t\t\t<Appearance><Material emissiveColor='%f %f %f'/></Appearance>\n\t\t" % color
+        x3dfile_str += str_lineset
+        x3dfile_str += "\t\t</Shape></Transform>\n"
+
+    x3dfile_str += "\t</Group>\n"
+    x3dfile_str += "</Switch>\n"
+
+    return x3dfile_str
+
 def x3d_display(assembly,
                 vertex_shader=None,
                 fragment_shader=None,
@@ -66,32 +88,36 @@ def x3d_display(assembly,
     def _to_x3dstr(cadObj):
         if isinstance(cadObj, cq_jupyter.Part):
             part = cadObj
-            exporter = X3DExporter(part.compound().wrapped, vertex_shader, fragment_shader, export_edges, 
-                                part.color, part.color, shininess, transparency, line_color, 
+            exporter = X3DExporter(part.compound().wrapped, vertex_shader, fragment_shader, export_edges,
+                                part.color, part.color, shininess, transparency, line_color,
                                 line_width, mesh_quality)
             exporter.compute()
             x3d_str_shape =  exporter.to_x3dfile_string(part.id)
-            return '\n'.join(x3d_str_shape.splitlines()[N_HEADER_LINES:-2])
+
+            root = ET.fromstring(x3d_str_shape)
+            scene = root.findall("Scene")[0]
+            switches = scene.findall("Switch")
+            switches[0].attrib["id"] = "switch_shape%d" % part.id
+            switches[1].attrib["id"] = "switch_shape%d_edges" % part.id
+            return "\n".join([ET.tostring(s, encoding='utf8', method='html').decode("utf-8") for s in switches])
+
         elif isinstance(cadObj, cq_jupyter.Assembly):
             assembly = cadObj
             x3d_str = ""
             for cadObj in assembly.parts():
                 x3d_str += _to_x3dstr(cadObj)
             return x3d_str
+        elif isinstance(cadObj, cq_jupyter.Edges):
+            def to_lineset(edge):
+                return ExportEdgeToILS(discretize_edge(edge.toOCC()))
+            occ_edges = [to_lineset(edge) for edge in cadObj.edges.all()]
+            x3d_str_edges = _indexed_lineset_to_x3d_string(occ_edges, id=cadObj.id, color=cadObj.color)
+            root = ET.fromstring(x3d_str_edges)
+            root.attrib["id"] = "switch_edges%d_edges" % cadObj.id
+            return ET.tostring(root, encoding='utf8', method='html').decode("utf-8")
         else:
             print("ERROR")
 
-    # x3d_str = ""
-    # for part in assembly.parts():
-    #     exporter = X3DExporter(part.compound().wrapped, vertex_shader, fragment_shader, export_edges, 
-    #                            part.color, part.color, shininess, transparency, line_color, 
-    #                            line_width, mesh_quality)
-
-    #     exporter.compute()
-
-    #     x3d_str_shape = exporter.to_x3dfile_string(part.id)
-    #     x3d_str += '\n'.join(x3d_str_shape.splitlines()[N_HEADER_LINES:-2]) + "\n"
-    
     compound = assembly.compound().wrapped
 
     bb = BoundBox._fromTopoDS(compound)
@@ -129,9 +155,9 @@ def x3d_display(assembly,
 def convertCqparts(cqpartAssembly, name="root", default_color=None):
     if default_color is None:
         default_color = (255, 255, 0)
-            
+
     cqpartAssembly.solve()
-    
+
     parts = []
     for k,v in cqpartAssembly._components.items():
         if isinstance(v, cqparts.Part):
@@ -160,29 +186,29 @@ def display(cadObj, height=400, ortho=True, fov=0.2, debug=False, default_color=
 
     def _display(html):
         IPython.display.display(IPython.display.HTML(html))
-        
+
     if isinstance(cadObj, cadquery.Shape):
         part = cq_jupyter.Part(cadquery.CQ(cadObj), "part", default_color)
-        html = x3d_display(cq_jupyter.Assembly("root", [part]), 
+        html = x3d_display(cq_jupyter.Assembly("root", [part]),
                            export_edges=True, height=height, ortho=ortho, fov=fov, debug=debug)
         _display(html)
 
     elif isinstance(cadObj, cadquery.Workplane):
         part = cq_jupyter.Part(cadObj, "part", default_color)
-        html = x3d_display(cq_jupyter.Assembly("root", [part]), 
+        html = x3d_display(cq_jupyter.Assembly("root", [part]),
                            export_edges=True, height=height, ortho=ortho, fov=fov, debug=debug)
         _display(html)
-        
+
     elif isinstance(cadObj, cq_jupyter.Assembly):
-        html = x3d_display(cadObj, 
+        html = x3d_display(cadObj,
                            export_edges=True, height=height, ortho=ortho, fov=fov, debug=debug)
         _display(html)
-    
+
     elif isinstance(cadObj, cq_jupyter.Part):
-        html = x3d_display(cq_jupyter.Assembly("root", [cadObj]), 
+        html = x3d_display(cq_jupyter.Assembly("root", [cadObj]),
                            export_edges=True, height=height, ortho=ortho, fov=fov, debug=debug)
         _display(html)
-    
+
     elif has_cqparts and isinstance(cadObj, cqparts.Assembly):
         cadObj.world_coords = CoordSystem()
         assembly = convertCqparts(cadObj)

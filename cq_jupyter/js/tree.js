@@ -42,9 +42,9 @@ function navTree($, divId, data, cqJupyter) { // jshint ignore:line
             }
         } else {
             if (node.mesh === 1) {
-                cqJupyter.showEdges(divId, node.x3d_name)
+                cqJupyter.showMesh(divId, node.x3d_name)
             } else {
-                cqJupyter.hideEdges(divId, node.x3d_name)
+                cqJupyter.hideMesh(divId, node.x3d_name)
             }
         }
     }
@@ -53,7 +53,7 @@ function navTree($, divId, data, cqJupyter) { // jshint ignore:line
         var status = [];
         for (var i = 0; i < tree.length; i++) {
             var node = tree[i];
-            if (node.type === 'part') {
+            if ((node.type === 'part') || (node.type === 'edges')) {
                 status.push(node[feature]);
             } else if (node.type === 'assembly') {
                 var s = adaptAssembly(node.children, feature);
@@ -67,7 +67,7 @@ function navTree($, divId, data, cqJupyter) { // jshint ignore:line
         if ((status.length > 0) && status.every((val, i, arr) => val === arr[0])) {
             return status[0];
         } else {
-            return 2;
+            return 1;
         }
     }
 
@@ -76,6 +76,12 @@ function navTree($, divId, data, cqJupyter) { // jshint ignore:line
             node[feature] = status;
             setFeature(node.id, feature, status);
             setObject(node, feature);
+        } else if (node.type === 'edges') {
+            if (feature === "mesh") {
+                node[feature] = status;
+                setFeature(node.id, feature, status);
+                setObject(node, feature);
+            }
         } else if (node.type === 'assembly') {
             for (var i = 0; i < node.children.length; i++) {
                 propagateAssembly(node.children[i], feature, status);
@@ -93,6 +99,14 @@ function navTree($, divId, data, cqJupyter) { // jshint ignore:line
             node[feature] = status;
             setFeature(node.id, feature, status);
             setObject(node, feature);
+
+        } else if (node.type === 'edges') {
+            if (feature === "mesh" ) {
+                status = (node[feature] + 1) % 2;
+                node[feature] = status;
+                setFeature(node.id, feature, status);
+                setObject(node, feature);
+            }
         } else if (node.type === 'assembly') {
             var status = 0;
             if (node[feature] < 2) {
