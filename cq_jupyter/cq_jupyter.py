@@ -153,3 +153,22 @@ class Assembly(CADObject):
     def reset_id(cls):
         global part_id
         part_id = 0
+
+
+def is_edges(cadObj):
+    return all([isinstance(obj, cq.occ_impl.shapes.Edge) for obj in cadObj.objects])
+
+
+def is_faces(cadObj):
+    return all([isinstance(obj, cq.occ_impl.shapes.Face) for obj in cadObj.objects])
+
+
+def convert(cadObj):
+    if isinstance(cadObj, (Assembly, Part, Faces, Edges)):
+        return cadObj
+    elif is_edges(cadObj):
+        return Edges(cadObj, color=(1, 0, 0))
+    elif is_faces(cadObj):
+        return Faces(cadObj, color=(0, 1, 0))
+    else:
+        return Part(cadObj, color=(0.9, 0.9, 0.9), show_edges=False)

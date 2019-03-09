@@ -1,4 +1,4 @@
-from .cq_jupyter import Assembly, Part, Edges, Faces
+from .cq_jupyter import Assembly, Part, Edges, Faces, convert
 from .display import display
 from .export import exportSTL
 import cadquery as cq

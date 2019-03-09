@@ -10,6 +10,7 @@ from cadquery.occ_impl.geom import BoundBox
 
 import cadquery
 import cq_jupyter
+
 try:
     import cqparts
     from cqparts.display.material import COLOR
@@ -177,37 +178,35 @@ def convertCqparts(cqpartAssembly, name="root", default_color=None):
     return cq_jupyter.Assembly(name, parts)
 
 
-def display(cadObj, height=400, ortho=True, fov=0.2, debug=False, default_color=None):
+def display(*cadObjs, height=400, ortho=True, fov=0.2, debug=False, default_color=None):
     """
     Jupyter 3D representation support
     """
     if default_color is None:
         default_color = (255, 255, 0)
 
-    def _display(html):
+    def _display(cadObj):
+        html = x3d_display(cadObj, export_edges=True, height=height, ortho=ortho, fov=fov, debug=debug)
         IPython.display.display(IPython.display.HTML(html))
+
+    if len(cadObjs) == 1:
+        cadObj = cadObjs[0]
+    else:
+        cadObj = cq_jupyter.Assembly([cq_jupyter.convert(cadObj) for cadObj in cadObjs])
 
     if isinstance(cadObj, cadquery.Shape):
         part = cq_jupyter.Part(cadquery.CQ(cadObj), color=default_color)
-        html = x3d_display(cq_jupyter.Assembly([part]),
-                           export_edges=True, height=height, ortho=ortho, fov=fov, debug=debug)
-        _display(html)
+        _display(cq_jupyter.Assembly([part]))
 
     elif isinstance(cadObj, cadquery.Workplane):
         part = cq_jupyter.Part(cadObj, color=default_color)
-        html = x3d_display(cq_jupyter.Assembly([part]),
-                           export_edges=True, height=height, ortho=ortho, fov=fov, debug=debug)
-        _display(html)
+        _display(cq_jupyter.Assembly([part]))
 
     elif isinstance(cadObj, cq_jupyter.Assembly):
-        html = x3d_display(cadObj,
-                           export_edges=True, height=height, ortho=ortho, fov=fov, debug=debug)
-        _display(html)
+        _display(cadObj)
 
     elif isinstance(cadObj, (cq_jupyter.Part, cq_jupyter.Edges, cq_jupyter.Faces)):
-        html = x3d_display(cq_jupyter.Assembly([cadObj]),
-                           export_edges=True, height=height, ortho=ortho, fov=fov, debug=debug)
-        _display(html)
+        _display(cq_jupyter.Assembly([cadObj]))
 
     elif has_cqparts and isinstance(cadObj, cqparts.Assembly):
         cadObj.world_coords = CoordSystem()
