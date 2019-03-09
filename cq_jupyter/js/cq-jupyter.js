@@ -4,11 +4,11 @@ class CqJupyter { // jshint ignore:line
         x3dom.reload(); // jshint ignore:line
     }
 
-    findShape(id, name) {
+    findFaces(id, name) {
         var cq = $('#cq_x3d_column_' + id); // jshint ignore:line
         return cq.find("#switch_" + name)[0];
     }
-    findMesh(id, name) {
+    findEdges(id, name) {
         var cq = $('#cq_x3d_column_' + id); // jshint ignore:line
         return cq.find("#switch_" + name + "_edges")[0]
     }
@@ -53,18 +53,18 @@ class CqJupyter { // jshint ignore:line
     }
 
     showFaces(id, name) {
-        this.findShape(id, name).setAttribute('whichChoice', 0);
+        this.findFaces(id, name).setAttribute('whichChoice', 0);
     }
 
     hideFaces(id, name) {
-        this.findShape(id, name).setAttribute('whichChoice', -1);
+        this.findFaces(id, name).setAttribute('whichChoice', -1);
     }
 
-    showMesh(id, name) {
-        this.findMesh(id, name).setAttribute('whichChoice', 0);
+    showEdges(id, name) {
+        this.findEdges(id, name).setAttribute('whichChoice', 0);
     }
 
-    hideMesh(id, name) {
-        this.findMesh(id, name).setAttribute('whichChoice', -1);
+    hideEdges(id, name) {
+        this.findEdges(id, name).setAttribute('whichChoice', -1);
     }
 }

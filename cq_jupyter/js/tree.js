@@ -42,9 +42,9 @@ function navTree($, divId, data, cqJupyter) { // jshint ignore:line
             }
         } else {
             if (node.mesh === 1) {
-                cqJupyter.showMesh(divId, node.x3d_name)
+                cqJupyter.showEdges(divId, node.x3d_name)
             } else {
-                cqJupyter.hideMesh(divId, node.x3d_name)
+                cqJupyter.hideEdges(divId, node.x3d_name)
             }
         }
     }

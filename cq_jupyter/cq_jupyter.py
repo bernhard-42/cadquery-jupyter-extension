@@ -46,7 +46,7 @@ class CADObject(object):
 
 class Part(CADObject):
 
-    def __init__(self, shape, name="part", color=None, show_shape=True, show_mesh=True):
+    def __init__(self, shape, name="part", color=None, show_faces=True, show_edges=True):
         super().__init__()
         self.name = name
         self.id = self.next_id()
@@ -54,8 +54,8 @@ class Part(CADObject):
             self.color = color
         self.shape = shape
         self._compound = Compound.makeCompound(shape.objects)
-        self.show_shape = show_shape
-        self.show_mesh = show_mesh
+        self.show_faces = show_faces
+        self.show_edges = show_edges
 
     def parts(self):
         return [self]
@@ -73,15 +73,15 @@ class Part(CADObject):
             "id": self.id,
             "x3d_name": "shape%d" % self.id,
             "color": self.web_color(),
-            "shape": int(self.show_shape),
-            "mesh": int(self.show_mesh)
+            "shape": int(self.show_faces),
+            "mesh": int(self.show_edges)
         }
 
 
 class Faces(Part):
 
-    def __init__(self, shape, name="faces", color=None, show_shape=True, show_mesh=True):
-        super().__init__(shape, name, color, show_shape, show_mesh)
+    def __init__(self, shape, name="faces", color=None, show_faces=True, show_edges=True):
+        super().__init__(shape, name, color, show_faces, show_edges)
 
 
 class Edges(CADObject):
