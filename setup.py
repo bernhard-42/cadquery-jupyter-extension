@@ -6,7 +6,7 @@ def read(fname):
 
 setup(
     name = "cq_jupyter",
-    version = "0.9.0",
+    version = "0.9.1",
     author = "Bernhard Walter",
     author_email = "bwalter42@gmail.com",
     description = ("An extension to view X3DOM content created by CadQuery 2.x"),
