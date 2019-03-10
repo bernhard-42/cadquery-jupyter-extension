@@ -1,5 +1,7 @@
 # CadQuery extension for Jupyter
 
+*C U R R E N T L Y   N O T    U P   T O   D A T E*
+
 ## Overview
 
 An extension to view X3DOM content created by CadQuery 2 ([https://github.com/CadQuery/cadquery](https://github.com/CadQuery/cadquery)). 
